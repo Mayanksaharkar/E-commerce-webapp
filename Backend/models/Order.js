@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const OrdersSchema = new Schema({
-  product_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Products",
+  product_ids: {
+    type: Array,
   },
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,6 +22,9 @@ const OrdersSchema = new Schema({
   },
   transaction_id: {
     type: String,
+  },
+  total_price: {
+    type: Number,
   },
 });
 

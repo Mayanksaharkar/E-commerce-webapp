@@ -5,10 +5,13 @@ const CartSchema = new Schema({
   customer_id: {
     type: String,
   },
-  product_id: {
-    type: String,
+  product_ids: {
+    type: Array,
   },
   quantity: {
+    type: Number,
+  },
+  total_price: {
     type: Number,
   },
 });
