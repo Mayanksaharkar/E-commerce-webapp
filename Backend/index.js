@@ -6,6 +6,7 @@ app.use(express.json());
 connect_to_mongo();
 app.use("/auth", require("./routes/auth"));
 app.use("/product", require("./routes/product"));
+app.use("/cart", require("./routes/cart"));
 app.get("/", (req, res) => {
   res.send("Hello");
 });
