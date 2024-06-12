@@ -1,5 +1,14 @@
+import Header from "./components/Header/Header";
+import AuthContextProvider from "./context/Auth/AuthContextProvider";
+
 function App() {
-  return <div className='text-4xl text-blue-300'>App</div>;
+  return (
+    <AuthContextProvider>
+      <nav className='fixed w-screen flex justify-center'>
+        <Header />
+      </nav>
+    </AuthContextProvider>
+  );
 }
 
 export default App;
