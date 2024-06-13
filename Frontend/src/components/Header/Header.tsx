@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
-import { Link } from "react-router-dom";
 import { Rotate as Hamburger } from "hamburger-react";
 import NavElements from "./NavElements";
 import Svg from "./Svg";
