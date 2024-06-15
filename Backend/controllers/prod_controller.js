@@ -72,6 +72,28 @@ exports.get_prods_by_category = async (req, res) => {
   }
 };
 
+exports.get_categories = async (req, res) => {
+  try {
+    const categories = await Products.aggregate([
+      {
+        $group: {
+          _id: "$category",
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    return res.json(categories.map((categories) => categories._id));
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Somthing went Wrong" });
+  }
+};
+
 exports.get_prod_by_id = async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

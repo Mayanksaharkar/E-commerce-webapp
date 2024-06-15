@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UserProfile from "./components/pages/UserProfile";
 import About from "./components/pages/About";
 import Categories from "./components/pages/Categories";
+import ProductContextProvider from "./context/Product/ProductContextProvider";
 function App() {
   const router = createBrowserRouter([
     {
@@ -53,7 +54,9 @@ function App() {
   ]);
   return (
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <ProductContextProvider>
+        <RouterProvider router={router} />
+      </ProductContextProvider>
     </AuthContextProvider>
   );
 }
