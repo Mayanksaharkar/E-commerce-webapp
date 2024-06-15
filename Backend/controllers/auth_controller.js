@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const User = require("../models/User");
 const Users = require("../models/User");
 
 exports.get_all_users = async (req, res) => {
@@ -34,7 +33,7 @@ exports.get_user_by_id = async (req, res) => {
 
 exports.delete_user_by_id = async (req, res) => {
   try {
-    let user = await User.findById(req.params.id);
+    let user = await Users.findById(req.params.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -54,7 +53,7 @@ exports.create_user = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    let user = await User.findOne({ email });
+    let user = await Users.findOne({ email });
     if (user) {
       return res.status(400).json({ message: "User Already Exists" });
     }
@@ -62,10 +61,17 @@ exports.create_user = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const securePass = await bcrypt.hash(password, salt);
 
-    user = new User({ name, email, password: securePass });
+    user = new Users({ name, email, password: securePass });
     await user.save();
 
-    return res.status(201).json({ message: "User Created" });
+    const data = {
+      user: {
+        id: user.id,
+      },
+    };
+    const authToken = jwt.sign(data, process.env.JWT_SECRET);
+
+    return res.status(200).json({ authToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something Went Wrong" });
@@ -75,13 +81,17 @@ exports.create_user = async (req, res) => {
 exports.user_login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    let user = await User.findOne({ email });
+    let user = await Users.findOne({ email });
     if (!user) {
-      res.status(400).json({ success, errors: "Invalid Credentials" });
+      return res
+        .status(400)
+        .json({ success: "success", errors: "Invalid Credentials" });
     }
     const passwordcompare = await bcrypt.compare(password, user.password);
     if (!passwordcompare) {
-      res.status(400).json({ success, errors: "Invalid Credentials" });
+      return res
+        .status(400)
+        .json({ success: "success", errors: "Invalid Credentials" });
     }
     const data = {
       user: {
@@ -90,17 +100,17 @@ exports.user_login = async (req, res) => {
     };
     const authToken = jwt.sign(data, process.env.JWT_SECRET);
 
-    res.status(200).json({ authToken });
+    return res.status(200).json({ authToken });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Internal server error");
+    return res.status(500).send("Internal server error");
   }
 };
 
 exports.update_user_by_id = async (req, res) => {
   const { name, address, mobile_no, pincode } = req.body;
   try {
-    let user = await User.findById(req.params.id);
+    let user = await Users.findById(req.params.id);
 
     if (!user) {
       return res.status(404).send("Not Found");

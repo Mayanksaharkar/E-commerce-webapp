@@ -1,8 +1,7 @@
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
-import ProductPage from "./pages/Product/ProductPage";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+
+import { Outlet } from "react-router-dom";
 
 function Layout() {
   return (
@@ -16,8 +15,7 @@ function Layout() {
           <Header />
         </div>
         <div>
-          {/* <SignIn /> */}
-          <SignUp />
+          <Outlet />
         </div>
         <div className='drop-'>
           <Footer />

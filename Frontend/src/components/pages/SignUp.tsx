@@ -1,13 +1,29 @@
-import { useState } from "react";
-
+import { useState, useContext, useEffect } from "react";
+import { NewUser } from "../../Models/User";
+import { AuthContext } from "../../context/Auth/AuthContext";
 function SignUp() {
-  const [newUser, setNewUser] = useState({
+  const { register } = useContext(AuthContext);
+  const [newUser, setNewUser] = useState<NewUser>({
     fname: "",
     lname: "",
     email: "",
-    pass: "",
-    repass: "",
+    password: "",
+    rePassword: "",
   });
+  const [formValid, setFormValid] = useState(false);
+
+  useEffect(() => {
+    // Validation logic: Check if all required fields are filled and passwords match
+    const isValid =
+      newUser.fname !== "" &&
+      newUser.lname !== "" &&
+      newUser.email !== "" &&
+      newUser.password !== "" &&
+      newUser.password === newUser.rePassword;
+
+    setFormValid(isValid);
+  }, [newUser]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUser((prev) => ({
@@ -16,13 +32,33 @@ function SignUp() {
     }));
   };
 
+  const handleClear = () => {
+    setNewUser({
+      fname: "",
+      lname: "",
+      email: "",
+      password: "",
+      rePassword: "",
+    });
+    setFormValid(false);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formValid) {
+      register(newUser);
+      handleClear(); // Optionally clear the form after successful submission
+    } else {
+      console.log("Form is not valid. Cannot submit.");
+    }
+  };
+
   return (
     <div className='min-h-screen bg-white  py-6 flex flex-col justify-center sm:py-12 '>
       <div className='relative py-3 sm:max-w-xl sm:mx-auto w-full'>
         <div className='absolute inset-0 bg-gradient-to-r from-secondary to-primary-content shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl'></div>
         <div className='relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20'>
           <h2 className='text-center text-base-content'>Gada Electronics</h2>
-          <div className='max-w-md mx-auto'>
+          <form onSubmit={handleSubmit} className='max-w-md mx-auto'>
             <div>
               <h1 className='lg:text-2xl text-lg font-semibold'>Sign Up</h1>
             </div>
@@ -31,14 +67,12 @@ function SignUp() {
                 <div className='flex gap-3'>
                   <div className='relative w-full'>
                     <input
-                      autoComplete='off'
                       id='fname'
                       name='fname'
                       type='text'
-                      value={newUser.fname}
+                      value={newUser?.fname}
                       onChange={handleChange}
                       className='peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600'
-                      placeholder='First Name'
                     />
                     <label
                       htmlFor='fname'
@@ -50,14 +84,13 @@ function SignUp() {
 
                   <div className='relative w-full'>
                     <input
-                      autoComplete='off'
                       id='lname'
                       name='lname'
                       type='lname'
                       className='peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600'
-                      placeholder='Last Name'
-                      value={newUser.lname}
+                      value={newUser?.lname}
                       onChange={handleChange}
+                      required
                     />
                     <label
                       htmlFor='lname'
@@ -69,14 +102,13 @@ function SignUp() {
                 </div>
                 <div className='relative'>
                   <input
-                    autoComplete='off'
                     id='email'
                     name='email'
                     type='email'
                     className='peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600'
-                    placeholder='Email'
-                    value={newUser.email}
+                    value={newUser?.email}
                     onChange={handleChange}
+                    required
                   />
                   <label
                     htmlFor='email'
@@ -88,14 +120,13 @@ function SignUp() {
 
                 <div className='relative'>
                   <input
-                    autoComplete='off'
                     id='password'
-                    name='pass'
+                    name='password'
                     type='password'
                     className='peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600'
-                    placeholder='Password'
-                    value={newUser.pass}
+                    value={newUser?.password}
                     onChange={handleChange}
+                    required
                   />
                   <label
                     htmlFor='password'
@@ -106,14 +137,13 @@ function SignUp() {
                 </div>
                 <div className='relative'>
                   <input
-                    autoComplete='off'
-                    id='repassword'
-                    name='repass'
+                    id='rePassword'
+                    name='rePassword'
                     type='password'
                     className='peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600'
-                    placeholder='Password'
-                    value={newUser.repass}
+                    value={newUser?.rePassword}
                     onChange={handleChange}
+                    required
                   />
                   <label
                     htmlFor='repassword'
@@ -123,10 +153,19 @@ function SignUp() {
                   </label>
                 </div>
                 <div className='flex justify-center w-full items-center'>
-                  <button className='bg-base-300 text-neutral rounded-md px-3 py-1 mx-4 '>
+                  <button
+                    className='bg-base-300 text-neutral rounded-md px-3 py-1 mx-4 '
+                    onClick={() => {
+                      handleClear();
+                    }}
+                  >
                     Clear
                   </button>
-                  <button className='bg-neutral text-white  rounded-md px-2 py-1 mx-4'>
+                  <button
+                    type='submit'
+                    className={`${!formValid ? "btn-disabled cursor-not-allowed" : "btn bg-neutral text-primary px-4"}`}
+                    disabled={!formValid}
+                  >
                     Submit
                   </button>
                 </div>
@@ -135,7 +174,7 @@ function SignUp() {
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
