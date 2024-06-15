@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";

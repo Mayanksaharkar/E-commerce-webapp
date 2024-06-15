@@ -1,12 +1,12 @@
-const Product = require("../models/Product");
+const Products = require("../models/Products");
 const mongoose = require("mongoose");
 exports.get_all_products = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Products.find({});
     if (products.length !== 0) {
       return res.status(200).json(products);
     }
-    return res.status(404).json({ message: "No Product to Show" });
+    return res.status(404).json({ message: "No Products to Show" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Somthing Went Wrong" });
@@ -29,9 +29,9 @@ exports.add_product = async (req, res) => {
       specification,
     } = req.body;
 
-    let prod = await Product.findOne({ link: link });
+    let prod = await Products.findOne({ link: link });
     if (!prod) {
-      prod = await new Product({
+      prod = await new Products({
         category,
         brand,
         title,
@@ -46,14 +46,29 @@ exports.add_product = async (req, res) => {
       });
       prod = await prod.save();
       if (!prod) {
-        return res.status(404).json({ message: "Product not Created" });
+        return res.status(404).json({ message: "Products not Created" });
       }
-      return res.status(200).json({ message: "Product Added" });
+      return res.status(200).json({ message: "Products Added" });
     }
-    return res.status(401).json({ message: "Product Already Exists" });
+    return res.status(401).json({ message: "Products Already Exists" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something Went Wrong" });
+  }
+};
+
+exports.get_prods_by_category = async (req, res) => {
+  try {
+    const { category } = req.body;
+    let products = await Products.find({ category });
+
+    if (products.length !== 0) {
+      return res.status(200).json(products);
+    }
+    return res.status(400).json({ message: "Not Found" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong" });
   }
 };
 
@@ -62,11 +77,11 @@ exports.get_prod_by_id = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid ObjectId" });
     }
-    const prod = await Product.findById(req.params.id);
+    const prod = await Products.findById(req.params.id);
     if (prod) {
       return res.status(200).json(prod);
     }
-    return res.status(404).json({ message: "Product Not Found" });
+    return res.status(404).json({ message: "Products Not Found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Somthing Went Wrong" });
@@ -78,9 +93,9 @@ exports.update_prod_by_id = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: "Invalid ObjectId" });
     }
-    let prod = await Product.findById(req.params.id);
+    let prod = await Products.findById(req.params.id);
     if (!prod) {
-      return res.status(404).json({ message: "Product Not Found" });
+      return res.status(404).json({ message: "Products Not Found" });
     }
     const {
       category,
@@ -108,7 +123,7 @@ exports.update_prod_by_id = async (req, res) => {
     if (price) prod.price = price;
 
     prod = await prod.save();
-    return res.status(200).json({ message: "Product Updated" });
+    return res.status(200).json({ message: "Products Updated" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something Went Wrong" });
@@ -123,15 +138,15 @@ exports.delete_prod_by_id = async (req, res) => {
       return res.status(400).json({ message: "Invalid ObjectId" });
     }
 
-    const deletedProduct = await Product.findByIdAndDelete(id);
+    const deletedProduct = await Products.findByIdAndDelete(id);
 
     if (!deletedProduct) {
-      return res.status(404).json({ message: "Product Not Found" });
+      return res.status(404).json({ message: "Products Not Found" });
     }
 
-    return res.status(200).json({ message: "Product Deleted Successfully" });
+    return res.status(200).json({ message: "Products Deleted Successfully" });
   } catch (error) {
-    console.error("Error deleting product:", error);
+    console.error("Error deleting Products:", error);
     return res.status(500).json({ message: "Something Went Wrong" });
   }
 };

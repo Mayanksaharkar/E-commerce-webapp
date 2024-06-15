@@ -1,20 +1,24 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../context/Auth/AuthContext";
+import { useState } from "react";
 import { Rotate as Hamburger } from "hamburger-react";
 import NavElements from "./NavElements";
 import Svg from "./Svg";
+import { useNavigate } from "react-router-dom";
 function Header() {
-  const { isLoggedIn } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <div className='navbar  h-min font-sans sticky p-0 lg:mt-2 mt-0 rounded flex justify-between w-full '>
+    <div className='navbar  h-min font-sans sticky p-0 lg:mt-2 mt-0 rounded  flex justify-between w-full '>
       <div className='flex-1 lg:gap-6 gap-0 lg:p-4 p-0'>
-        <div className='btn btn-ghost rounded'>
+        <div
+          className='btn btn-ghost rounded'
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <Svg />
         </div>
 

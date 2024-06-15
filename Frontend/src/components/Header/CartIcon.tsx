@@ -1,5 +1,3 @@
-import React from "react";
-
 function CartIcon() {
   return (
     <div className='flex-none gap-4'>
