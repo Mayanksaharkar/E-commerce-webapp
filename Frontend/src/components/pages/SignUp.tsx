@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { NewUser } from "../../Models/User";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import { Link } from "react-router-dom";
 function SignUp() {
   const { register } = useContext(AuthContext);
   const [newUser, setNewUser] = useState<NewUser>({
@@ -13,7 +14,6 @@ function SignUp() {
   const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
-    // Validation logic: Check if all required fields are filled and passwords match
     const isValid =
       newUser.fname !== "" &&
       newUser.lname !== "" &&
@@ -73,6 +73,7 @@ function SignUp() {
                       value={newUser?.fname}
                       onChange={handleChange}
                       className='peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600'
+                      required
                     />
                     <label
                       htmlFor='fname'
@@ -154,6 +155,7 @@ function SignUp() {
                 </div>
                 <div className='flex justify-center w-full items-center'>
                   <button
+                    type='reset'
                     className='bg-base-300 text-neutral rounded-md px-3 py-1 mx-4 '
                     onClick={() => {
                       handleClear();
@@ -163,14 +165,17 @@ function SignUp() {
                   </button>
                   <button
                     type='submit'
-                    className={`${!formValid ? "btn-disabled cursor-not-allowed" : "btn bg-neutral text-primary px-4"}`}
-                    disabled={!formValid}
+                    className='btn-ghost px-3 py-1 border rounded-md text-base-content'
+                    style={{ backgroundColor: "#eb9db9" }}
                   >
                     Submit
                   </button>
                 </div>
                 <div className='text-center'>
-                  Already Registered ? <span>Sign In</span>
+                  Already Registered ?{" "}
+                  <Link className='btn' to={"/signin"}>
+                    Sign In
+                  </Link>
                 </div>
               </div>
             </div>

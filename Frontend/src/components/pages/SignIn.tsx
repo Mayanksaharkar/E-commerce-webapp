@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   const { login } = useContext(AuthContext);
@@ -84,7 +85,7 @@ function SignIn() {
                   </button>
                 </div>
                 <div className='text-center'>
-                  Not Registered yet! <span>Sign Up</span>
+                  Not Registered yet! <Link className="btn btn-ghost" to={"/signup"}>Sign Up</Link>
                 </div>
               </div>
             </div>

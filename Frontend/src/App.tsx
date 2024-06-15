@@ -1,15 +1,15 @@
-import Footer from "./components/Footer/Footer";
-import Header from "./components/Header/Header";
 import Layout from "./components/Layout";
 import Cart from "./components/pages/Cart";
 import Home from "./components/pages/Home/Home";
-import ProductCard from "./components/pages/Product/ProductCard";
+
 import ProductPage from "./components/pages/Product/ProductPage";
 import SignIn from "./components/pages/SignIn";
 import SignUp from "./components/pages/SignUp";
 import AuthContextProvider from "./context/Auth/AuthContextProvider";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import UserProfile from "./components/pages/UserProfile";
+import About from "./components/pages/About";
+import Categories from "./components/pages/Categories";
 function App() {
   const router = createBrowserRouter([
     {
@@ -21,16 +21,28 @@ function App() {
           element: <Home />,
         },
         {
-          path: "/product/:productId",
-          element: <ProductPage />,
-        },
-        {
           path: "/signIn",
           element: <SignIn />,
         },
         {
           path: "/signUp",
           element: <SignUp />,
+        },
+        {
+          path: "/product/:productId",
+          element: <ProductPage />,
+        },
+        {
+          path: "/categories",
+          element: <Categories />,
+        },
+        {
+          path: "/about",
+          element: <About />,
+        },
+        {
+          path: "/user/profile",
+          element: <UserProfile />,
         },
         {
           path: "/cart",

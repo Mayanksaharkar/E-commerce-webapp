@@ -1,17 +1,39 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
 function NavElements() {
   const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
   return (
     <>
-      <div className=' text-lg font-semibold rounded bg-transparent hover:bg-transparent hover:border-none cursor-pointer'>
-        Categories
+      <div className='text-black'>
+        <button
+          className=' text-lg font-semibold rounded bg-transparent hover:bg-transparent hover:border-none cursor-pointer '
+          onClick={() => {
+            navigate("/categories");
+          }}
+        >
+          Categories
+        </button>
       </div>
-      <div className=' text-lg font-semibold rounded bg-transparent hover:bg-transparent hover:border-none cursor-pointer '>
-        About
+      <div>
+        <button
+          className=' text-lg font-semibold rounded bg-transparent hover:bg-transparent hover:border-none cursor-pointer '
+          onClick={() => {
+            navigate("/about");
+          }}
+        >
+          About
+        </button>
       </div>
-      <CartIcon />
+      <button
+        onClick={() => {
+          navigate("/cart");
+        }}
+      >
+        <CartIcon />
+      </button>
       {isLoggedIn ? (
         <div className='dropdown dropdown-end r'>
           <div
@@ -31,22 +53,18 @@ function NavElements() {
             className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
           >
             <li>
-              <a className='justify-between'>
-                Profile
-                <span className='badge'>New</span>
-              </a>
+              <Link to={"/user/profile"}>Profile</Link>
             </li>
             <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
+              <button>Logout</button>
             </li>
           </ul>
         </div>
       ) : (
         <div className='float-left'>
-          <button className=' btn rounded lg:p-4'>Login</button>
+          <Link to={"/signin"} className=' btn rounded lg:p-4'>
+            Sign In
+          </Link>
         </div>
       )}
     </>

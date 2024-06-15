@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { Rotate as Hamburger } from "hamburger-react";
 import NavElements from "./NavElements";
