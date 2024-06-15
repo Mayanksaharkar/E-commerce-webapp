@@ -4,7 +4,16 @@ import daisyui from "daisyui";
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backdropBlur: {
+        "3xl": "30px",
+      },
+    },
+  },
+  variants: {
+    extend: {
+      backdropBlur: ["responsive"],
+    },
   },
   plugins: [daisyui],
   daisyui: {
