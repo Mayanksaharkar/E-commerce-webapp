@@ -1,10 +1,9 @@
-import { useEffect } from "react";
+import { Product } from "../../Models/Product";
 import ProductContext from "../../context/Product/ProductContext";
-import { useContext, useState } from "react";
-import { Product, Products } from "../../Models/Product";
+import { useContext } from "react";
 import ProductCard from "./Product/ProductCard";
 function Categories() {
-  const { products, categories } = useContext(ProductContext);
+  const { products: Products, categories } = useContext(ProductContext);
 
   return (
     <div className='bg-white'>
