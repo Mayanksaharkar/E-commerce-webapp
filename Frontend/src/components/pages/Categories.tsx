@@ -1,34 +1,52 @@
-import { Product } from "../../Models/Product";
-import ProductContext from "../../context/Product/ProductContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
+import { ClipLoader } from "react-spinners";
+import { ProductContext } from "../../context/Product/ProductContextProvider";
 import ProductCard from "./Product/ProductCard";
+import { Product } from "../../Models/Product";
+
 function Categories() {
-  const { products: Products, categories } = useContext(ProductContext);
+  const { fetchProducts, getCategories, products, categories } =
+    useContext(ProductContext);
+
+  useEffect(() => {
+    if (products === undefined) {
+      fetchProducts();
+      getCategories();
+    }
+  }, []);
 
   return (
-    <div className='bg-white'>
-      {categories.map((category: string) => (
-        <div className='mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8'>
-          <h2 className='text-2xl font-bold tracking-tight text-gray-900'>
-            {category}
-          </h2>
-
-          <div className='mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8'>
-            {products
-              .filter((product) => product.category === category)
-              .map((product, index) => (
-                <div className='relative' key={index}>
-                  <ProductCard data={product} />
-                </div>
-              ))}
-
-            {/* {<!-- More products... -->} */}
-          </div>
+    <div className='w-full mt-4'>
+      {categories === undefined || products === undefined ? (
+        <div className='w-full flex justify-center'>
+          <ClipLoader color='#000000' />
         </div>
-      ))}
+      ) : (
+        <div className='flex flex-col w-full justify-start gap-4'>
+          {categories.map((category: string, index) => (
+            <div className='w-full flex-col justify-start' key={index}>
+              <h3>{category}</h3>
+              <div
+                style={{
+                  scrollbarWidth: "thin",
+                  scrollbarColor: "transparent",
+                  scrollSnapType: " x mandatory",
+                }}
+                className='w-full flex gap-1 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x-auto no-scrollbar'
+              >
+                {products
+                  .filter((prod: Product) => prod.category === category)
+                  .map((filteredProd: Product, prodIndex: React.Key) => (
+                    <div key={prodIndex} style={{ scrollSnapAlign: "start" }}>
+                      <ProductCard data={filteredProd} />
+                    </div>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
-
-    // <button>Click me</button>
   );
 }
 

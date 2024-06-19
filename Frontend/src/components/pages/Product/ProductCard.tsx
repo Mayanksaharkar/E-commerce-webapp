@@ -1,7 +1,7 @@
 function ProductCard({ data }) {
   return (
     <>
-      <div className='cursor-pointer mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white  shadow-xl duration-300 hover:scale-105 hover:shadow-lg'>
+      <div className='cursor-pointer mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white  shadow-2xl duration-300 hover:scale-105 hover:shadow-lg'>
         <img
           className='h-48 w-full object-contain rounded-md object-center'
           src={data.cover_img}

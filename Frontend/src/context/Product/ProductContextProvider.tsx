@@ -1,15 +1,10 @@
-import { ReactNode } from "react";
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Products } from "../../Models/Product";
-import ProductContext from "./ProductContext";
 
-interface ComponentProps {
-  children: ReactNode;
-  // add other props here if needed
-}
+import { createContext } from "react";
+export const ProductContext = createContext(0);
 
-function ProductContextProvider({ children }: ComponentProps) {
+function ProductContextProvider({ children }) {
   const [products, setProducts] = useState<Products>();
   const [categories, setCategories] = useState([]);
 
@@ -23,8 +18,8 @@ function ProductContextProvider({ children }: ComponentProps) {
         },
       });
       const data = await response.json();
-      await setProducts(data);
-      console.log(products);
+      setProducts(data);
+      // setIsLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -39,15 +34,12 @@ function ProductContextProvider({ children }: ComponentProps) {
       });
       const data = await response.json();
 
-      await setCategories(data);
+      setCategories(data);
+      // setIsLoading(false);
     } catch (error) {
       console.error("Error getting Categories:", error);
     }
   };
-  useEffect(() => {
-    fetchProducts();
-    getCategories();
-  }, []);
 
   const getByCategory = async (category: string) => {
     const result = products?.filter((prod) => prod.category === category);
@@ -63,6 +55,7 @@ function ProductContextProvider({ children }: ComponentProps) {
         categories,
         setCategories,
         fetchProducts,
+        getCategories,
       }}
     >
       {children}

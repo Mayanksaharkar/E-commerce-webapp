@@ -14,7 +14,7 @@ function Layout() {
         >
           <Header />
         </div>
-        <div>
+        <div className='min-h-[70vh] flex justify-center items-center '>
           <Outlet />
         </div>
         <div className='drop-'>

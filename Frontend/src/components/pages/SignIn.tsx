@@ -85,7 +85,10 @@ function SignIn() {
                   </button>
                 </div>
                 <div className='text-center'>
-                  Not Registered yet! <Link className="btn btn-ghost" to={"/signup"}>Sign Up</Link>
+                  Not Registered yet!{" "}
+                  <Link className='btn btn-ghost' to={"/signup"}>
+                    Sign Up
+                  </Link>
                 </div>
               </div>
             </div>
