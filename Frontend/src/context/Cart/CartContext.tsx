@@ -1,13 +1,12 @@
 import { createContext, useState, useEffect } from "react";
+import { CartItems } from "../../Models/Cart";
 
 export const CartContext = createContext(0);
 
 function CartContextProvider({ children }) {
   const baseUrl = "http://localhost:3000/cart/";
 
-  const [items, setItems] = useState([]);
-
-  
+  const [items, setItems] = useState<CartItems>([]);
 
   const add_to_cart = async (userID: string, prodId: string, qty: number) => {
     try {
@@ -32,25 +31,30 @@ function CartContextProvider({ children }) {
     }
   };
 
-  const fetchAllItems = async (uid) => {
+  const fetchAllItems = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/cart/${uid}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        `http://localhost:3000/cart/${localStorage.getItem("uid")}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
 
       const res = await response.json();
-      setItems(res); // No need for `await` here
+      console.log(res.cartItems);
+      setItems(res.cartItems || []); // Assuming res.cartItems contains the array of items
     } catch (error) {
       console.log(error);
     }
-
-    // Logging items should be done within a useEffect or callback to ensure the state is updated.
-    console.log(items);
   };
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   return (
     <CartContext.Provider value={{ add_to_cart, items, fetchAllItems }}>
