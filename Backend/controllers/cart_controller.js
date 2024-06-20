@@ -1,6 +1,6 @@
 const Cart = require("../models/Cart");
 
-const Products = require("../models/Products");
+const Product = require("../models/Products");
 exports.add_to_cart = async (req, res) => {
   const { productId, qty } = req.body;
 

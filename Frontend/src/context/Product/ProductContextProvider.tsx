@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Products } from "../../Models/Product";
+import { Products, Product } from "../../Models/Product";
 
 import { createContext } from "react";
 export const ProductContext = createContext(0);
@@ -8,8 +8,13 @@ function ProductContextProvider({ children }) {
   const [products, setProducts] = useState<Products>();
   const [categories, setCategories] = useState([]);
 
+  
+
+  const [currProduct, setCurrProduct] = useState();
+
   const base_url = "http://localhost:3000/product/";
   const fetchProducts = async () => {
+    
     try {
       const response = await fetch(base_url, {
         method: "GET",
@@ -17,9 +22,13 @@ function ProductContextProvider({ children }) {
           "Content-Type": "application/json",
         },
       });
+      
       const data = await response.json();
+      
+
       setProducts(data);
       // setIsLoading(false);
+      
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -41,10 +50,30 @@ function ProductContextProvider({ children }) {
     }
   };
 
+  const getProdById = async (id) => {
+    console.log(id);
+    const response = await fetch(`http://localhost:3000/product/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const res = await response.json();
+    console.log(res);
+    setCurrProduct(res);
+
+    // await console.log(response.json);
+
+    // await setCurrProduct(res);
+    // await console.log(currProduct);
+  };
+
   const getByCategory = async (category: string) => {
     const result = products?.filter((prod) => prod.category === category);
     return result;
   };
+
+
 
   return (
     <ProductContext.Provider
@@ -56,6 +85,8 @@ function ProductContextProvider({ children }) {
         setCategories,
         fetchProducts,
         getCategories,
+        getProdById,
+        currProduct,
       }}
     >
       {children}

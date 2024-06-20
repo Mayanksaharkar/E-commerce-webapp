@@ -99,8 +99,8 @@ exports.user_login = async (req, res) => {
       },
     };
     const authToken = jwt.sign(data, process.env.JWT_SECRET);
-
-    return res.status(200).json({ authToken });
+    // console.log(user._id.toString());
+    return res.status(200).json({ authToken, userId: user._id.toString() });
   } catch (error) {
     console.log(error.message);
     return res.status(500).send("Internal server error");

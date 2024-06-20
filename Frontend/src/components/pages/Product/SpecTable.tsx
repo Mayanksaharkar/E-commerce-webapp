@@ -1,5 +1,3 @@
-import React from "react";
-
 function SpecTable({ specifications }) {
   return (
     <ul className='max-h-96 overflow-y-scroll '>

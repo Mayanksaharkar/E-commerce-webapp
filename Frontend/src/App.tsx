@@ -11,6 +11,7 @@ import UserProfile from "./components/pages/UserProfile";
 import About from "./components/pages/About";
 import Categories from "./components/pages/Categories";
 import ProductContextProvider from "./context/Product/ProductContextProvider";
+import CartContextProvider from "./context/Cart/CartContext";
 function App() {
   const router = createBrowserRouter([
     {
@@ -55,7 +56,9 @@ function App() {
   return (
     <AuthContextProvider>
       <ProductContextProvider>
-        <RouterProvider router={router} />
+        <CartContextProvider>
+          <RouterProvider router={router} />
+        </CartContextProvider>
       </ProductContextProvider>
     </AuthContextProvider>
   );

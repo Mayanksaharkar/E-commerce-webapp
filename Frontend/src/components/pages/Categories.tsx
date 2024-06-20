@@ -32,13 +32,13 @@ function Categories() {
                   scrollbarColor: "transparent",
                   scrollSnapType: " x mandatory",
                 }}
-                className='w-full flex gap-1 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x-auto no-scrollbar'
+                className='w-full flex gap-1 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x no-scrollbar'
               >
                 {products
                   .filter((prod: Product) => prod.category === category)
                   .map((filteredProd: Product, prodIndex: React.Key) => (
                     <div key={prodIndex} style={{ scrollSnapAlign: "start" }}>
-                      <ProductCard data={filteredProd} />
+                      <ProductCard product={filteredProd} />
                     </div>
                   ))}
               </div>

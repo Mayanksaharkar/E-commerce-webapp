@@ -96,9 +96,6 @@ exports.get_categories = async (req, res) => {
 
 exports.get_prod_by_id = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ message: "Invalid ObjectId" });
-    }
     const prod = await Products.findById(req.params.id);
     if (prod) {
       return res.status(200).json(prod);

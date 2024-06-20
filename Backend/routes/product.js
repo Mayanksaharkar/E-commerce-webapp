@@ -16,7 +16,7 @@ router.get("/", get_all_products);
 router.post("/", protect, add_product);
 router.get("/category", protect, get_prods_by_category);
 router.get("/categories", get_categories);
-router.get("/:id", protect, get_prod_by_id);
+router.get("/:id",  get_prod_by_id);
 router.put("/:id", protect, admin, update_prod_by_id);
 router.delete("/:id", protect, admin, delete_prod_by_id);
 
