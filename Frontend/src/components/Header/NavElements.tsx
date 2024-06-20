@@ -2,8 +2,9 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
+
 function NavElements() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, currUserId } = useContext(AuthContext);
   const navigate = useNavigate();
   return (
     <>
@@ -29,7 +30,9 @@ function NavElements() {
       </div>
       <button
         onClick={() => {
-          navigate("/cart");
+          isLoggedIn
+            ? navigate(`/cart/${localStorage.getItem("uid")}`)
+            : navigate("/signin");
         }}
       >
         <CartIcon />
@@ -56,7 +59,15 @@ function NavElements() {
               <Link to={"/user/profile"}>Profile</Link>
             </li>
             <li>
-              <button>Logout</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  localStorage.removeItem("token");
+                  setIsLoggedIn(false);
+                }}
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>

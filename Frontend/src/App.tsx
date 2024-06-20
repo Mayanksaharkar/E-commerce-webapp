@@ -47,7 +47,7 @@ function App() {
           element: <UserProfile />,
         },
         {
-          path: "/cart",
+          path: "/cart/:uid",
           element: <Cart />,
         },
       ],

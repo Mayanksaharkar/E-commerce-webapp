@@ -11,8 +11,6 @@ const AuthContextProvider = ({ children }) => {
     else setIsLoggedIn(false);
   }, [isLoggedIn]);
 
-  const [currUserId, setCurrUserId] = useState();
-
   const login = async (user: User) => {
     console.log();
     const response = await fetch(`${base_url}/login`, {
@@ -27,9 +25,11 @@ const AuthContextProvider = ({ children }) => {
     });
     const res = await response.json();
     localStorage.setItem("token", res.authToken);
-    setCurrUserId(res.userId);
+    localStorage.setItem("uid", res.userId);
     setIsLoggedIn(true);
   };
+  
+  
   const register = async (newUser: NewUser) => {
     const response = await fetch(`${base_url}/register`, {
       method: "POST",
@@ -48,9 +48,11 @@ const AuthContextProvider = ({ children }) => {
       setIsLoggedIn(true);
     }
   };
+
+
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, login, register, currUserId }}
+      value={{ isLoggedIn, setIsLoggedIn, login, register }}
     >
       {children}
     </AuthContext.Provider>
