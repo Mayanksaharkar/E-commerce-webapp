@@ -36,20 +36,17 @@ exports.add_to_cart = async (req, res) => {
 };
 
 exports.get_cart_items = async (req, res) => {
-  try {
-    console.log(req.params.uid);
-    const userCart = await Cart.findOne({ user: req.params.uid });
-    if (!userCart) {
-      return res.status(404).json({ message: "Cart is Empty" });
-    }
+  const userCart = await Cart.findOne({ user: req.user._id }).populate(
+    "cartItems.product",
+    "title price cover_img"
+  );
 
-    return res.status(200).json(userCart.cartItems);
-  } catch (error) {
-    console.log(error);
-    return;
+  if (!userCart) {
+    return res.status(404).json({ message: "Cart is Empty" });
   }
-};
 
+  return res.status(200).json(userCart);
+};
 exports.update_cart_item = async (req, res) => {
   try {
     const { qty } = req.body;
