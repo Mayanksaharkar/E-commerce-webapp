@@ -46,9 +46,17 @@ function CartContextProvider({ children }) {
 
       const res = await response.json();
       console.log(res.cartItems);
-      setItems(res.cartItems || []); // Assuming res.cartItems contains the array of items
+      setItems(res.cartItems || []);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const removeItem = async () => {
+    try {
+      const res = fetch("");
+    } catch (error) {
+      console.error(error);
     }
   };
 
