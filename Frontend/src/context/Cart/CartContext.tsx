@@ -9,14 +9,15 @@ function CartContextProvider({ children }) {
   const [items, setItems] = useState<CartItems>([]);
 
   const [totalCost, setTotalCost] = useState(0);
+  const [itemCost, setItemCost] = useState(0);
 
   useEffect(() => {
-    if (items.length >= 1) {
-      const total = items.reduce((sum, item) => sum + item.product.price, 0);
-      setTotalCost(total);
-    } else {
-      setTotalCost(0);
+    let cost = 0;
+    for (let i = 0; i < items.length; i++) {
+      cost = cost + items[i].product.price * items[i].qty;
     }
+    setItemCost(cost);
+    
   }, [items]);
 
   const add_to_cart = async (userID: string, prodId: string, qty: number) => {
@@ -125,6 +126,10 @@ function CartContextProvider({ children }) {
         totalCost,
         updateQty,
         removeItem,
+        itemCost,
+        setItemCost,
+
+        setTotalCost,
       }}
     >
       {children}

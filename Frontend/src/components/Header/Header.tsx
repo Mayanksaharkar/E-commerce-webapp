@@ -1,13 +1,23 @@
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Rotate as Hamburger } from "hamburger-react";
 import NavElements from "./NavElements";
 import Svg from "./Svg";
 import { useNavigate } from "react-router-dom";
+import { ProductContext } from "../../context/Product/ProductContextProvider";
 function Header() {
+  const { searchInput, setSearchInput, handleSearch } =
+    useContext(ProductContext);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSearch();
+    navigate("/search");
   };
 
   return (
@@ -21,12 +31,17 @@ function Header() {
         >
           <Svg />
         </div>
-
-        <input
-          type='text'
-          className='input w-full bg-base-200 rounded lg:mr-4'
-          placeholder='Search for product'
-        />
+        <form onSubmit={handleSubmit} className='w-full'>
+          <input
+            type='text'
+            className='input w-full bg-base-200 rounded lg:mr-4'
+            placeholder='Search for product'
+            value={searchInput}
+            onChange={(e) => {
+              setSearchInput(e.target.value);
+            }}
+          />
+        </form>
       </div>
       <div className='hidden md:flex gap-4 mx-3 text-xl'>
         <NavElements />

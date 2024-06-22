@@ -13,6 +13,7 @@ import Categories from "./components/pages/Categories";
 import ProductContextProvider from "./context/Product/ProductContextProvider";
 import CartContextProvider from "./context/Cart/CartContext";
 import UserContextProvider from "./context/User/UserContext";
+import SearchResult from "./components/pages/SearchResult";
 function App() {
   const router = createBrowserRouter([
     {
@@ -50,6 +51,10 @@ function App() {
         {
           path: "/cart/:uid",
           element: <Cart />,
+        },
+        {
+          path: "/search",
+          element: <SearchResult />,
         },
       ],
     },

@@ -1,14 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Products, Product } from "../../Models/Product";
 
 import { createContext } from "react";
+import { useNavigate } from "react-router-dom";
 export const ProductContext = createContext(0);
 
 function ProductContextProvider({ children }) {
   const [products, setProducts] = useState<Products>();
   const [categories, setCategories] = useState([]);
-
   const [currProduct, setCurrProduct] = useState();
+
+  const [searchInput, setSearchInput] = useState("");
+  const [resultEle, setResultEle] = useState([]);
+
+  useEffect(() => {
+    handleSearch();
+  }, [searchInput]);
+
+  const handleSearch = async () => {
+    if (searchInput.trim() === "") {
+      setResultEle([]);
+    }
+
+    const filteredProducts = products?.filter(
+      (product) =>
+        product.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchInput.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    setResultEle(filteredProducts);
+  };
 
   const base_url = "http://localhost:3000/product/";
   const fetchProducts = async () => {
@@ -77,6 +99,11 @@ function ProductContextProvider({ children }) {
         getCategories,
         getProdById,
         currProduct,
+        searchInput,
+        setSearchInput,
+        handleSearch,
+        resultEle,
+        setResultEle,
       }}
     >
       {children}

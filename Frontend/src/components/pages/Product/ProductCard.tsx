@@ -16,7 +16,7 @@ function ProductCard({ product }) {
 
           <div className='flex items-center'>
             <p className='mr-2 text-lg font-semibold text-primary-content '>
-              {product.price}
+              ₹ {product.price}
             </p>
 
             <Link

@@ -4,22 +4,29 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 
 function Cart() {
-  const { fetchAllItems, items, totalCost, removeItem } =
-    useContext(CartContext);
+  const {
+    fetchAllItems,
+    items,
+    itemCost,
+    totalCost,
+    removeItem,
+    setTotalCost,
+  } = useContext(CartContext);
 
   useEffect(() => {
     fetchAllItems();
+    setTotalCost(shippingCost + itemCost);
   }, [fetchAllItems]);
 
   const [currItemId, setCurrItemId] = useState(null);
   const [currItemQty, setCurrItemQty] = useState(null);
-  const [shippingCost, setShippingCost] = useState(199); // Default shipping cost
+  const [shippingCost, setShippingCost] = useState(199);
 
   const navigate = useNavigate();
 
-  const handleModalOpen = (itemId, itemQty) => {
-    setCurrItemId(itemId);
-    setCurrItemQty(itemQty);
+  const handleModalOpen = async (itemId, itemQty) => {
+    await setCurrItemId((prevItemId) => itemId);
+    await setCurrItemQty((prevItemQty) => itemQty);
     document.getElementById("my_modal_3").showModal();
   };
 
@@ -30,7 +37,11 @@ function Cart() {
   return (
     <>
       {currItemId && currItemQty !== null && (
-        <Modal defqty={currItemQty} id={currItemId} />
+        <Modal
+          currItemQty={currItemQty}
+          currItemId={currItemId}
+          setCurrItemQty={setCurrItemQty}
+        />
       )}
 
       <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
@@ -133,7 +144,7 @@ function Cart() {
               <span className='font-semibold text-sm uppercase'>
                 Items {items.length}
               </span>
-              <span className='font-semibold text-sm'>₹ {totalCost}</span>
+              <span className='font-semibold text-sm'>₹ {itemCost}</span>
             </div>
             <div>
               <label className='font-medium inline-block mb-3 text-sm uppercase'>
@@ -151,7 +162,7 @@ function Cart() {
             <div className='border-t mt-8'>
               <div className='flex font-semibold justify-between py-6 text-sm uppercase'>
                 <span>Total cost</span>
-                <span>₹ {totalCost + shippingCost}</span>
+                <span>₹ {totalCost}</span>
               </div>
               <button className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full'>
                 Checkout

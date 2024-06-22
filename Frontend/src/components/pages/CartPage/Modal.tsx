@@ -2,17 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 
 function Modal(props) {
-  const { defqty, id } = props;
+  const { currItemId, currItemQty, setCurrItemQty } = props;
 
-  useEffect(() => {
-    console.log(defqty, id);
-  }, []);
-
-  const [qty, setqty] = useState(defqty);
   const { updateQty } = useContext(CartContext);
 
   const handleUpdate = () => {
-    updateQty(qty, id);
+    updateQty(currItemQty, currItemId);
     document.getElementById("closeBtn").click();
   };
   return (
@@ -27,10 +22,10 @@ function Modal(props) {
                   type='number'
                   placeholder='Quantity Here'
                   className='input input-bordered w-full max-w-xs rounded'
-                  value={qty}
+                  value={currItemQty}
                   min={1}
                   onChange={(e) => {
-                    setqty(e.target.value);
+                    setCurrItemQty(e.target.value);
                   }}
                 />
               </label>
