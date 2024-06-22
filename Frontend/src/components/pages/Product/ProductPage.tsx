@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProductContext } from "../../../context/Product/ProductContextProvider";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { AuthContext } from "../../../context/Auth/AuthContext";
+import { ClipLoader } from "react-spinners";
 
 function ProductPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,27 +20,26 @@ function ProductPage() {
 
   const { isLoggedIn, currUserId } = useContext(AuthContext);
 
-  const handleAddToCart = () => {
-    add_to_cart(currUserId, currProduct._id, 1);
+  const handleAddToCart = async () => {
+    await add_to_cart(currUserId, currProduct._id, 1);
   };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(productId);
-    if (!currProduct) {
-      getProdById(productId);
-    }
+    getProdById(productId);
   }, []);
 
   setTimeout(() => {
-    setIsLoading(false);
-  }, 5000);
+    if (currProduct) {
+      setIsLoading(false);
+    }
+  }, 2000);
 
   return (
     <div className='pt-4'>
       {isLoading ? (
-        <div>Loading.....</div>
+        <ClipLoader color='#000000' />
       ) : (
         <div className='max-w-[70vw] mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col md:flex-row -mx-4'>
@@ -86,7 +86,7 @@ function ProductPage() {
               <div className='flex mb-4'>
                 <div className='mr-4'>
                   <span className='font-bold text-accent lg:text-3xl text-lg'>
-                    {currProduct?.price}
+                    ₹ {currProduct?.price}
                   </span>
                 </div>
                 <div>
@@ -157,17 +157,6 @@ function ProductPage() {
                   </div>
                 )}
                 <p className='text-base-content text-sm mt-2'></p>
-              </div>
-              <div className='flex justify-end'>
-                <button
-                  className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    updateInfo();
-                  }}
-                >
-                  Save Changes
-                </button>
               </div>
             </div>
           </div>

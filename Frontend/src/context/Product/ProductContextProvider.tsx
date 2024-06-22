@@ -8,13 +8,10 @@ function ProductContextProvider({ children }) {
   const [products, setProducts] = useState<Products>();
   const [categories, setCategories] = useState([]);
 
-  
-
   const [currProduct, setCurrProduct] = useState();
 
   const base_url = "http://localhost:3000/product/";
   const fetchProducts = async () => {
-    
     try {
       const response = await fetch(base_url, {
         method: "GET",
@@ -22,13 +19,11 @@ function ProductContextProvider({ children }) {
           "Content-Type": "application/json",
         },
       });
-      
+
       const data = await response.json();
-      
 
       setProducts(data);
       // setIsLoading(false);
-      
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -44,36 +39,31 @@ function ProductContextProvider({ children }) {
       const data = await response.json();
 
       setCategories(data);
-      // setIsLoading(false);
     } catch (error) {
       console.error("Error getting Categories:", error);
     }
   };
 
-  const getProdById = async (id) => {
-    console.log(id);
-    const response = await fetch(`http://localhost:3000/product/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const res = await response.json();
-    console.log(res);
-    setCurrProduct(res);
+  const getProdById = async (id: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/product/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const res = await response.json();
 
-    // await console.log(response.json);
-
-    // await setCurrProduct(res);
-    // await console.log(currProduct);
+      setCurrProduct(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getByCategory = async (category: string) => {
     const result = products?.filter((prod) => prod.category === category);
     return result;
   };
-
-
 
   return (
     <ProductContext.Provider
