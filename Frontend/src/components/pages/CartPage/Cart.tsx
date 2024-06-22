@@ -9,10 +9,11 @@ function Cart() {
 
   useEffect(() => {
     fetchAllItems();
-  }, []);
+  }, [fetchAllItems]);
 
   const [currItemId, setCurrItemId] = useState(null);
   const [currItemQty, setCurrItemQty] = useState(null);
+  const [shippingCost, setShippingCost] = useState(199); // Default shipping cost
 
   const navigate = useNavigate();
 
@@ -20,6 +21,10 @@ function Cart() {
     setCurrItemId(itemId);
     setCurrItemQty(itemQty);
     document.getElementById("my_modal_3").showModal();
+  };
+
+  const handleShippingChange = (e) => {
+    setShippingCost(parseInt(e.target.value));
   };
 
   return (
@@ -134,18 +139,19 @@ function Cart() {
               <label className='font-medium inline-block mb-3 text-sm uppercase'>
                 Shipping
               </label>
-              <select className='block p-2 text-gray-600 w-full text-sm'>
-                <option>Standard shipping - ₹199</option>
-                <option>Express shipping - ₹299.00</option>
+              <select
+                className='block p-2 text-gray-600 w-full text-sm'
+                onChange={handleShippingChange}
+              >
+                <option value={199}>Standard shipping - ₹199</option>
+                <option value={299}>Express shipping - ₹299.00</option>
               </select>
             </div>
-            <button className='bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase mt-3'>
-              Apply
-            </button>
+
             <div className='border-t mt-8'>
               <div className='flex font-semibold justify-between py-6 text-sm uppercase'>
                 <span>Total cost</span>
-                <span>₹ {totalCost}</span>
+                <span>₹ {totalCost + shippingCost}</span>
               </div>
               <button className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full'>
                 Checkout

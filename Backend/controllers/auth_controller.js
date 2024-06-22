@@ -20,7 +20,7 @@ exports.get_all_users = async (req, res) => {
 
 exports.get_user_by_id = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await Users.findById(req.params.id);
     if (!user) {
       res.status(404).send("user not found");
     }
@@ -109,6 +109,7 @@ exports.user_login = async (req, res) => {
 
 exports.update_user_by_id = async (req, res) => {
   const { name, address, mobile_no, pincode } = req.body;
+  console.log(address, mobile_no, pincode);
   try {
     let user = await Users.findById(req.params.id);
 

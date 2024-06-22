@@ -7,11 +7,12 @@ import SignIn from "./components/pages/SignIn";
 import SignUp from "./components/pages/SignUp";
 import AuthContextProvider from "./context/Auth/AuthContextProvider";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import UserProfile from "./components/pages/UserProfile";
+import UserProfile from "./components/pages/ProfilePage/UserProfile";
 import About from "./components/pages/About";
 import Categories from "./components/pages/Categories";
 import ProductContextProvider from "./context/Product/ProductContextProvider";
 import CartContextProvider from "./context/Cart/CartContext";
+import UserContextProvider from "./context/User/UserContext";
 function App() {
   const router = createBrowserRouter([
     {
@@ -54,13 +55,15 @@ function App() {
     },
   ]);
   return (
-    <AuthContextProvider>
-      <ProductContextProvider>
-        <CartContextProvider>
-          <RouterProvider router={router} />
-        </CartContextProvider>
-      </ProductContextProvider>
-    </AuthContextProvider>
+    <UserContextProvider>
+      <AuthContextProvider>
+        <ProductContextProvider>
+          <CartContextProvider>
+            <RouterProvider router={router} />
+          </CartContextProvider>
+        </ProductContextProvider>
+      </AuthContextProvider>
+    </UserContextProvider>
   );
 }
 
