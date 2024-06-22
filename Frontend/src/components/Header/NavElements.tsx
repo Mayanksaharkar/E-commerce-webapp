@@ -63,6 +63,7 @@ function NavElements() {
                 onClick={(e) => {
                   e.preventDefault();
                   localStorage.removeItem("token");
+                  localStorage.removeItem("uid");
                   setIsLoggedIn(false);
                 }}
               >

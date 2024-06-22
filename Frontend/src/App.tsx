@@ -1,5 +1,5 @@
 import Layout from "./components/Layout";
-import Cart from "./components/pages/Cart";
+import Cart from "./components/pages/CartPage/Cart";
 import Home from "./components/pages/Home/Home";
 
 import ProductPage from "./components/pages/Product/ProductPage";

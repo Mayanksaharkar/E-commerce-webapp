@@ -8,6 +8,17 @@ function CartContextProvider({ children }) {
 
   const [items, setItems] = useState<CartItems>([]);
 
+  const [totalCost, setTotalCost] = useState(0);
+
+  useEffect(() => {
+    if (items.length >= 1) {
+      const total = items.reduce((sum, item) => sum + item.product.price, 0);
+      setTotalCost(total);
+    } else {
+      setTotalCost(0);
+    }
+  }, [items]);
+
   const add_to_cart = async (userID: string, prodId: string, qty: number) => {
     try {
       const response = await fetch(baseUrl, {
@@ -60,12 +71,40 @@ function CartContextProvider({ children }) {
     }
   };
 
+  const updateQty = async (qty: number, id: string) => {
+    try {
+      console.log(qty, id, localStorage.getItem("uid"));
+
+      const response = await fetch(`http://localhost:3000/cart/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          qty: qty,
+          user: {
+            _id: localStorage.getItem("uid"),
+          },
+        }),
+      });
+      const res = await response.json();
+      if (response.status === 200) {
+        await fetchAllItems();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     console.log(items);
   }, [items]);
 
   return (
-    <CartContext.Provider value={{ add_to_cart, items, fetchAllItems }}>
+    <CartContext.Provider
+      value={{ add_to_cart, items, fetchAllItems, totalCost, updateQty }}
+    >
       {children}
     </CartContext.Provider>
   );

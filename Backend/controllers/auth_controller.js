@@ -71,7 +71,7 @@ exports.create_user = async (req, res) => {
     };
     const authToken = jwt.sign(data, process.env.JWT_SECRET);
 
-    return res.status(200).json({ authToken });
+    return res.status(200).json({ uid: user.id, token: authToken });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something Went Wrong" });

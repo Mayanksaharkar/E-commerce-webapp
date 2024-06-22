@@ -11,11 +11,11 @@ function DescAccordian({ Description }) {
       {Description.map((desc, index) => (
         <div
           key={index}
-          className='accordion-item bg-white border border-gray-200 rounded-lg mb-4'
+          className='accordion-item bg-white border border-gray-200 rounded-lg mb-1'
         >
           <h2 className='accordion-header mb-0'>
             <button
-              className='accordion-button flex items-center justify-between w-full p-4 text-left text-gray-800 font-medium text-lg bg-white border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500'
+              className='accordion-button flex items-center justify-between w-full p-4 text-left text-gray-800 font-medium text-lg bg-white border-0 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-content'
               onClick={() => handleClick(index)}
             >
               {desc.title}
@@ -38,7 +38,7 @@ function DescAccordian({ Description }) {
             </button>
           </h2>
           <div
-            className={`accordion-content    transition-max-height duration-300 ease-in-out overflow-hidden ${
+            className={`accordion-content  px-2  transition-max-height duration-300 ease-in-out overflow-hidden ${
               activeIndex === index ? "max-h-screen" : "max-h-0"
             }`}
           >
