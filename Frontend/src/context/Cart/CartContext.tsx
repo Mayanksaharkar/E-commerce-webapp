@@ -63,9 +63,24 @@ function CartContextProvider({ children }) {
     }
   };
 
-  const removeItem = async () => {
+  const removeItem = async (itemId: string) => {
     try {
-      const res = fetch("");
+      const response = await fetch(`http://localhost:3000/cart/${itemId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          user: {
+            _id: localStorage.getItem("uid"),
+          },
+        }),
+      });
+      const res = response.json();
+      if (response.status === 200) {
+        fetchAllItems();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -103,7 +118,14 @@ function CartContextProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ add_to_cart, items, fetchAllItems, totalCost, updateQty }}
+      value={{
+        add_to_cart,
+        items,
+        fetchAllItems,
+        totalCost,
+        updateQty,
+        removeItem,
+      }}
     >
       {children}
     </CartContext.Provider>

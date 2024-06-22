@@ -52,13 +52,7 @@ exports.update_cart_item = async (req, res) => {
     const { qty } = req.body;
     const userCart = await Cart.findOne({ user: req.user._id });
 
-    console.log(userCart);
-
     if (userCart) {
-      // userCart.cartItems.filter((cartItem)=>{
-      //   cartItem.product ===
-      // })
-
       const itemIndex = userCart.cartItems.findIndex(
         (p) => p._id.toString() === req.params.id
       );

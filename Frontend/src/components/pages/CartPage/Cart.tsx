@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 
 function Cart() {
-  const { fetchAllItems, items, totalCost } = useContext(CartContext);
+  const { fetchAllItems, items, totalCost, removeItem } =
+    useContext(CartContext);
 
   useEffect(() => {
     fetchAllItems();
@@ -75,7 +76,7 @@ function Cart() {
                       {item.product?.title}
                     </span>
                     <button
-                      onClick={() => handleRemoveItem(item.product._id)}
+                      onClick={() => removeItem(item._id)}
                       className='font-semibold hover:text-red-500 text-gray-500 text-xs'
                     >
                       Remove
