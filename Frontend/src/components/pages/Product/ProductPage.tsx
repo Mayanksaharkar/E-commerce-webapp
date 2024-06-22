@@ -41,11 +41,19 @@ function ProductPage() {
       {isLoading ? (
         <div>Loading.....</div>
       ) : (
-        <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-[70vw] mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col md:flex-row -mx-4'>
             <aside className='md:flex-1 self-start lg:sticky lg:top-36 w-full'>
-              <div className='h-[460px] w-full rounded-lg bg-base-content mb-4'>
-                <ImageSlider images={currProduct?.img_list} />
+              <div className='h-[460px] w-full rounded-lg bg-white mb-4'>
+                {currProduct.img_list.length > 0 ? (
+                  <ImageSlider images={currProduct?.img_list} />
+                ) : (
+                  <img
+                    src='https://grafgearboxes.com/productos/images/df.jpg'
+                    className='w-full h-full rounded-lg object-contain'
+                    alt=''
+                  />
+                )}{" "}
               </div>
               <div className='flex -mx-2 mb-4'>
                 <div className='w-1/2 px-2'>
@@ -88,24 +96,25 @@ function ProductPage() {
                   <span className='text-base-content'>In Stock</span>
                 </div>
               </div>
-              <div className='px-3 py-1 bg-secondary w-min rounded text-white font-bold flex gap-1 items-center'>
-                <span>{currProduct.rating} </span>
-                <span>
-                  <svg
-                    version='1.0'
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='16'
-                    height='14'
-                    viewBox='0 0 1280.000000 1218.000000'
-                    preserveAspectRatio='xMidYMid meet'
-                  >
-                    <g
-                      transform='translate(0.000000,1218.000000) scale(0.100000,-0.100000)'
-                      fill='#ffffff'
-                      stroke='none'
+              {currProduct.rating && (
+                <div className='px-3 py-1 bg-secondary w-min rounded text-white font-bold flex gap-1 items-center'>
+                  <span>{currProduct.rating} </span>
+                  <span>
+                    <svg
+                      version='1.0'
+                      xmlns='http://www.w3.org/2000/svg'
+                      width='16'
+                      height='14'
+                      viewBox='0 0 1280.000000 1218.000000'
+                      preserveAspectRatio='xMidYMid meet'
                     >
-                      <path
-                        d='M6368 12168 c-9 -7 -46 -107 -83 -223 -37 -115 -84 -264 -105 -330
+                      <g
+                        transform='translate(0.000000,1218.000000) scale(0.100000,-0.100000)'
+                        fill='#ffffff'
+                        stroke='none'
+                      >
+                        <path
+                          d='M6368 12168 c-9 -7 -46 -107 -83 -223 -37 -115 -84 -264 -105 -330
 -21 -66 -89 -277 -150 -470 -61 -192 -130 -406 -152 -475 -22 -69 -70 -222
 -108 -340 -64 -200 -87 -272 -192 -600 -22 -69 -70 -222 -108 -340 -38 -118
 -87 -272 -109 -342 -23 -71 -59 -185 -82 -255 -22 -71 -71 -225 -109 -343 -38
@@ -121,27 +130,44 @@ function ProductPage() {
 17 -1782 7 -970 -6 -2061 -12 -2423 -13 l-660 -3 -248 775 c-136 426 -254 795
 -262 820 -19 60 -91 285 -514 1610 -198 619 -379 1186 -403 1260 -23 74 -49
 143 -57 153 -18 20 -42 22 -64 5z'
-                      />
-                    </g>
-                  </svg>
-                </span>
-              </div>
+                        />
+                      </g>
+                    </svg>
+                  </span>
+                </div>
+              )}
+
               <div className='w-full '>
-                <span className='font-bold text-2xl  text-base-content text-right'>
-                  Product Description:
-                </span>
-
                 {currProduct.desc_long && (
-                  <DescAccordian Description={currProduct.desc_long} />
-                )}
-                <span className='font-bold text-2xl text-base-content text-right'>
-                  Product Specifications:
-                </span>
+                  <>
+                    <span className='font-bold text-2xl  text-base-content text-right'>
+                      Product Description:
+                    </span>
 
+                    <DescAccordian Description={currProduct.desc_long} />
+                  </>
+                )}
                 {currProduct.specification && (
-                  <SpecTable specifications={currProduct.specification} />
+                  <div>
+                    <span className='font-bold text-2xl text-base-content text-right'>
+                      Product Specifications:
+                    </span>
+
+                    <SpecTable specifications={currProduct.specification} />
+                  </div>
                 )}
                 <p className='text-base-content text-sm mt-2'></p>
+              </div>
+              <div className='flex justify-end'>
+                <button
+                  className='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    updateInfo();
+                  }}
+                >
+                  Save Changes
+                </button>
               </div>
             </div>
           </div>
