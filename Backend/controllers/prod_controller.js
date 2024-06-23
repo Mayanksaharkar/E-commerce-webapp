@@ -1,8 +1,20 @@
-const Products = require("../models/Products");
+const { Products, FeaturedProd } = require("../models/Products");
 const mongoose = require("mongoose");
 exports.get_all_products = async (req, res) => {
   try {
     const products = await Products.find({});
+    if (products.length !== 0) {
+      return res.status(200).json(products);
+    }
+    return res.status(404).json({ message: "No Products to Show" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Somthing Went Wrong" });
+  }
+};
+exports.get_featured_products = async (req, res) => {
+  try {
+    const products = await FeaturedProd.find({});
     if (products.length !== 0) {
       return res.status(200).json(products);
     }

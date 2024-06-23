@@ -86,7 +86,7 @@ function ProductPage() {
               <div className='flex mb-4'>
                 <div className='mr-4'>
                   <span className='font-bold text-accent lg:text-3xl text-lg'>
-                    ₹ {currProduct?.price}
+                    ₹ {currProduct?.price.toLocaleString}
                   </span>
                 </div>
                 <div>

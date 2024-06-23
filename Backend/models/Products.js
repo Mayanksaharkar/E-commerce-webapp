@@ -49,5 +49,7 @@ const ProductSchema = new Schema({
     default: null,
   },
 });
-
-module.exports = mongoose.model("Products", ProductSchema);
+const Products = mongoose.model("Products", ProductSchema);
+module.exports.Products = Products;
+const FeaturedProd = mongoose.model("FeaturedProd", ProductSchema);
+module.exports.FeaturedProd = FeaturedProd;

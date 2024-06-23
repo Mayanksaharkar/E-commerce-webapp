@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className='footer footer-center p-10 bg-base-200 text-base-content rounded bottom-0 '>
+    <footer className='footer footer-center p-10 bg-base-300 text-base-content rounded bottom-0 '>
       <nav className='grid grid-flow-col gap-4'>
         <a className='link link-hover'>Home</a>
         <a className='link link-hover'>Categories</a>
@@ -44,7 +44,9 @@ function Footer() {
         </div>
       </nav>
       <aside>
-        <p>Copyright © 2024 - All right reserved by Gada Electronics pvt. Ltd</p>
+        <p>
+          Copyright © 2024 - All right reserved by Gada Electronics pvt. Ltd
+        </p>
       </aside>
     </footer>
   );

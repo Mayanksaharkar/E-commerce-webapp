@@ -8,6 +8,10 @@ export default {
       backdropBlur: {
         "3xl": "30px",
       },
+      backgroundImage: {
+        "jethalal-bg": "url('/public/HomePageImg.jpeg')",
+        // "footer-texture": "url('/img/footer-texture.png')",
+      },
     },
   },
   variants: {

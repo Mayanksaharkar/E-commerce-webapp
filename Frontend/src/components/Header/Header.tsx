@@ -21,7 +21,7 @@ function Header() {
   };
 
   return (
-    <div className='navbar  h-min font-sans sticky p-0 lg:mt-2 mt-0 rounded  flex justify-between w-full '>
+    <div className='navbar   h-min font-sans sticky p-0   rounded  flex justify-between w-full '>
       <div className='flex-1 lg:gap-6 gap-0 lg:p-4 p-0'>
         <div
           className='btn btn-ghost rounded'
@@ -56,7 +56,7 @@ function Header() {
         />
         {isMenuOpen && (
           <div className='transition-all duration-700 absolute top-16 left-0 right-0  shadow-xl rounded bg-white/90 rounded-b-3xl'>
-            <div className='flex flex-col items-center py-2  w-full'>
+            <div className='flex flex-col items-center   w-full'>
               <NavElements />
             </div>
           </div>

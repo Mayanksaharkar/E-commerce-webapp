@@ -7,6 +7,7 @@ export const ProductContext = createContext(0);
 
 function ProductContextProvider({ children }) {
   const [products, setProducts] = useState<Products>();
+  const [featuredProd, setFeaturedProd] = useState<Products>();
   const [categories, setCategories] = useState([]);
   const [currProduct, setCurrProduct] = useState();
 
@@ -16,6 +17,10 @@ function ProductContextProvider({ children }) {
   useEffect(() => {
     handleSearch();
   }, [searchInput]);
+
+  useEffect(() => {
+    fetchFeaturedProducts();
+  }, []);
 
   const handleSearch = async () => {
     if (searchInput.trim() === "") {
@@ -33,6 +38,26 @@ function ProductContextProvider({ children }) {
   };
 
   const base_url = "http://localhost:3000/product/";
+  const fetchFeaturedProducts = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/product/featuredproduct",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      setFeaturedProd(data);
+      // setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
   const fetchProducts = async () => {
     try {
       const response = await fetch(base_url, {
@@ -104,6 +129,8 @@ function ProductContextProvider({ children }) {
         handleSearch,
         resultEle,
         setResultEle,
+        featuredProd,
+        fetchFeaturedProducts,
       }}
     >
       {children}
