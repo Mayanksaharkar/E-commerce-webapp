@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
+import { disabled } from "@material-tailwind/react/types/components/accordion";
 
 function Cart() {
   const {
@@ -164,7 +165,10 @@ function Cart() {
                 <span>Total cost</span>
                 <span>₹ {totalCost}</span>
               </div>
-              <button className='bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full'>
+              <button
+                className='bg-secondary-content font-semibold btn hover:text-secondary-content rounded-lg py-3 text-sm text-white uppercase w-full'
+                disabled={items.length === 0}
+              >
                 Checkout
               </button>
             </div>
