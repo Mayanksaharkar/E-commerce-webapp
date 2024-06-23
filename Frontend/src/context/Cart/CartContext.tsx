@@ -17,7 +17,6 @@ function CartContextProvider({ children }) {
       cost = cost + items[i].product.price * items[i].qty;
     }
     setItemCost(cost);
-    
   }, [items]);
 
   const add_to_cart = async (userID: string, prodId: string, qty: number) => {
@@ -57,7 +56,6 @@ function CartContextProvider({ children }) {
       );
 
       const res = await response.json();
-      console.log(res.cartItems);
       setItems(res.cartItems || []);
     } catch (error) {
       console.log(error);
@@ -112,10 +110,6 @@ function CartContextProvider({ children }) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    console.log(items);
-  }, [items]);
 
   return (
     <CartContext.Provider
