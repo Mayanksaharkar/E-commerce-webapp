@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { ProductContext } from "../../../context/Product/ProductContextProvider";
 import FeaturedProductCard from "./FeaturedProductCard";
-import { Product } from "../../../Models/Product";
 import { ClipLoader } from "react-spinners";
+import { Product } from "../../../Models/Product";
 
 function Home() {
   const { featuredProd, fetchFeaturedProducts } = useContext(ProductContext);
@@ -10,6 +10,7 @@ function Home() {
   useEffect(() => {
     fetchFeaturedProducts();
     console.log(featuredProd);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -37,8 +38,8 @@ function Home() {
         </div>
         {featuredProd !== undefined ? (
           <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-rows-4 lg:gap-10 p-4 h-min'>
-            {featuredProd.map((prod, index) => (
-              <FeaturedProductCard product={prod} />
+            {featuredProd.map((prod: Product, index: React.Key) => (
+              <FeaturedProductCard product={prod} key={index} />
             ))}
           </div>
         ) : (

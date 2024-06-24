@@ -13,6 +13,7 @@ function Categories() {
       fetchProducts();
       getCategories();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -23,7 +24,7 @@ function Categories() {
         </div>
       ) : (
         <div className='flex flex-col w-full justify-start gap-4'>
-          {categories.map((category: string, index) => (
+          {categories.map((category: string, index: React.Key) => (
             <div className='w-full flex-col justify-start' key={index}>
               <h3>{category}</h3>
               <div
