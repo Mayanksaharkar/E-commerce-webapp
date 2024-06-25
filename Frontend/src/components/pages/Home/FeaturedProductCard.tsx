@@ -1,6 +1,6 @@
 function FeaturedProductCard({ product }) {
   return (
-    <div className=' col-span-1 flex-row justify-center items-center text-center rounded-2xl bg-base-100'>
+    <div className='pt-3 col-span-1 flex-row justify-center items-center text-center rounded-2xl bg-base-100'>
       <div className='w-full max-h-56 justify-center flex px-4'>
         <img
           src={product?.cover_img}

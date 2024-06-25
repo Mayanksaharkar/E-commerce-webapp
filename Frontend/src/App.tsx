@@ -14,6 +14,7 @@ import ProductContextProvider from "./context/Product/ProductContextProvider";
 import CartContextProvider from "./context/Cart/CartContext";
 import UserContextProvider from "./context/User/UserContext";
 import SearchResult from "./components/pages/SearchResult";
+import CategoryPage from "./components/pages/CategoryPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ function App() {
         {
           path: "/categories",
           element: <Categories />,
+        },
+        {
+          path: "/categories/:category",
+          element: <CategoryPage />,
         },
         {
           path: "/about",

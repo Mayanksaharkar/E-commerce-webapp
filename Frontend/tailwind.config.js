@@ -21,6 +21,19 @@ export default {
   },
   plugins: [daisyui],
   daisyui: {
-    themes: ["light", "emerald", "cupcake", "wireframe"],
+    themes: [
+      {
+        cupcake: {
+          primary: "#a991f7",
+          secondary: "#333C4D",
+          accent: "#37cdbe",
+          neutral: "#3d4451",
+          "base-100": "#ffffff",
+        },
+      },
+      "emerald",
+      "cupcake",
+      "wireframe",
+    ],
   },
 };

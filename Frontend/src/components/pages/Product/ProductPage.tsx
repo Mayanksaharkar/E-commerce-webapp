@@ -84,16 +84,24 @@ function ProductPage() {
               </h2>
 
               <div className='flex mb-4'>
-                <div className='mr-4'>
-                  <span className='font-bold text-accent lg:text-3xl text-lg'>
-                    ₹ {currProduct?.price.toLocaleString}
-                  </span>
-                </div>
+                {currProduct.price ? (
+                  <div className='mr-4'>
+                    <span className='font-bold text-accent lg:text-3xl text-lg'>
+                      ₹ {currProduct?.price.toLocaleString()}
+                    </span>
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <div>
                   <span className='font-bold text-base-content'>
                     Availability: {"      "}
                   </span>
-                  <span className='text-base-content'>In Stock</span>
+                  {currProduct.price ? (
+                    <span className='text-base-content'>In Stock</span>
+                  ) : (
+                    <span className='text-secondary text-lg'>Out Of Stock</span>
+                  )}
                 </div>
               </div>
               {currProduct.rating && (

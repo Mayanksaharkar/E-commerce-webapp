@@ -8,6 +8,9 @@ export const ProductContext = createContext(0);
 function ProductContextProvider({ children }) {
   const [products, setProducts] = useState<Products>();
   const [featuredProd, setFeaturedProd] = useState<Products>();
+
+  const [catProds, setCatProds] = useState<Products>([]);
+
   const [categories, setCategories] = useState([]);
   const [currProduct, setCurrProduct] = useState();
 
@@ -17,10 +20,6 @@ function ProductContextProvider({ children }) {
   useEffect(() => {
     handleSearch();
   }, [searchInput]);
-
-  useEffect(() => {
-    fetchFeaturedProducts();
-  }, []);
 
   const handleSearch = async () => {
     if (searchInput.trim() === "") {
@@ -108,8 +107,25 @@ function ProductContextProvider({ children }) {
   };
 
   const getByCategory = async (category: string) => {
-    const result = products?.filter((prod) => prod.category === category);
-    return result;
+    // const result = products?.filter((prod) => prod.category === category);
+    // return result;
+    try {
+      const response = await fetch(
+        `http://localhost:3000/product/${categories}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        const res = await response.json();
+        setCatProds(res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -131,6 +147,8 @@ function ProductContextProvider({ children }) {
         setResultEle,
         featuredProd,
         fetchFeaturedProducts,
+        catProds,
+        setCatProds,
       }}
     >
       {children}

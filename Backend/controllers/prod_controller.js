@@ -71,7 +71,7 @@ exports.add_product = async (req, res) => {
 
 exports.get_prods_by_category = async (req, res) => {
   try {
-    const { category } = req.body;
+    const { category } = req.params.category;
     let products = await Products.find({ category });
 
     if (products.length !== 0) {
