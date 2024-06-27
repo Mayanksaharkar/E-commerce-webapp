@@ -1,11 +1,10 @@
 const Cart = require("../models/Cart");
 
-const Product = require("../models/Products");
+const { Products } = require("../models/Products");
 exports.add_to_cart = async (req, res) => {
   const { productId, qty } = req.body;
 
-  const product = await Product.findById(productId);
-
+  const product = await Products.findOne({ _id: productId });
   if (!product) {
     return res.status(404).json({ message: "Product Not Found" });
   }
