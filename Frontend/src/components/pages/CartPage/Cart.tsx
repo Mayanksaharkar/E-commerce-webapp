@@ -3,6 +3,7 @@ import { CartContext } from "../../../context/Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import { disabled } from "@material-tailwind/react/types/components/accordion";
+import CheckOut from "./CheckOut";
 
 function Cart() {
   const {
@@ -17,7 +18,7 @@ function Cart() {
   useEffect(() => {
     fetchAllItems();
     setTotalCost(shippingCost + itemCost);
-  }, [fetchAllItems]);
+  }, [itemCost]);
 
   const [currItemId, setCurrItemId] = useState(null);
   const [currItemQty, setCurrItemQty] = useState(null);
@@ -165,12 +166,7 @@ function Cart() {
                 <span>Total cost</span>
                 <span>₹ {totalCost}</span>
               </div>
-              <button
-                className='bg-secondary-content font-semibold btn hover:text-secondary-content rounded-lg py-3 text-sm text-white uppercase w-full'
-                disabled={items.length === 0}
-              >
-                Checkout
-              </button>
+              <CheckOut />
             </div>
           </div>
         </div>

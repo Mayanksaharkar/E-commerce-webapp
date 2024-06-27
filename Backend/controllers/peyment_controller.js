@@ -7,23 +7,28 @@ const pg = new PaymentGateway({
   secretKey: process.env.CLIENT_SECRET,
 });
 exports.checkout = async (req, res) => {
+  const { customerName, orderId, orderAmount, customerEmail, customerPhone } =
+    req.body;
+
+  console.log(req.body);
+
   try {
     pg.orders
 
       .createOrders({
-        orderId: req.body.orderId,
+        orderId: orderId,
 
-        orderAmount: req.body.orderAmt,
+        orderAmount: orderAmount,
 
         orderCurrency: "INR",
 
-        orderNote: req.body.productName,
+        orderNote: "dwada",
 
-        customerName: req.body.uname,
+        customerName: customerName,
 
-        customerPhone: req.body.uphone,
+        customerPhone: "8421056849",
 
-        customerEmail: req.body.uemail,
+        customerEmail: "mayank@gmail.com",
 
         returnUrl: "http://localhost:5173/",
       })

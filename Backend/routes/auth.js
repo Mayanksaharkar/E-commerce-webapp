@@ -11,7 +11,7 @@ const {
 } = require("../controllers/auth_controller");
 
 router.get("/allUsers", protect, admin, get_all_users);
-router.get("/:id", protect, admin, get_user_by_id);
+router.get("/:id", protect, get_user_by_id);
 router.delete("/:id", protect, admin, delete_user_by_id);
 
 router.post("/register", create_user);

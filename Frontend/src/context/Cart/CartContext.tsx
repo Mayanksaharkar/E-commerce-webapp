@@ -1,71 +1,16 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import { CartItems } from "../../Models/Cart";
-import { AuthContext } from "../Auth/AuthContext";
 export const CartContext = createContext(0);
 
 function CartContextProvider({ children }) {
-  const { currUser } = useContext(AuthContext);
-
-  const [orderId, setOrderId] = useState("");
-
-  const getSessionId = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          amount: totalCost,
-          uid: localStorage.getItem("uid"),
-          uname: currUser.name,
-          umobile: String(currUser.mobile_no),
-          uemail: currUser.email,
-        }),
-      });
-
-      if (res.data && res.data.payment_session_id) {
-        console.log(res.data);
-        setOrderId(res.data.order_id);
-        return res.data.payment_session_id;
-        console.log(res.data.payment_session_id);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const verifyPayment = async () => {
-    try {
-      console.log(orderId);
-      const res = await fetch("http://localhost:3000/payment/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          orderId: orderId,
-        }),
-      });
-
-      if (res && res.data) {
-        alert("payment verified");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // *************************
-
   const baseUrl = "http://localhost:3000/cart/";
 
   const [items, setItems] = useState<CartItems>([]);
 
   const [totalCost, setTotalCost] = useState(0);
   const [itemCost, setItemCost] = useState(0);
+
+  const [currCartId, setCurrCartId] = useState("");
 
   useEffect(() => {
     let cost = 0;
@@ -113,6 +58,7 @@ function CartContextProvider({ children }) {
 
       const res = await response.json();
       setItems(res.cartItems || []);
+      setCurrCartId(res._id);
     } catch (error) {
       console.log(error);
     }
@@ -178,10 +124,9 @@ function CartContextProvider({ children }) {
         removeItem,
         itemCost,
         setItemCost,
-        verifyPayment,
         setTotalCost,
-        getSessionId,
-        orderId,
+        currCartId,
+        setCurrCartId,
       }}
     >
       {children}

@@ -12,7 +12,9 @@ const AuthContextProvider = ({ children }) => {
     if (localStorage.getItem("token")) {
       setIsLoggedIn(true);
     }
-    getUserData();
+    getUserData().then(() => {
+      console.log(currUser);
+    });
   }, []);
 
   const getUserData = async () => {
@@ -28,6 +30,7 @@ const AuthContextProvider = ({ children }) => {
         }
       );
       const res = await response.json();
+      console.log(res);
       setCurrUser(res);
     } catch (error) {
       console.error(error);
