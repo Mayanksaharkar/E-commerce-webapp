@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
 import { ProductContext } from "../../context/Product/ProductContextProvider";
 import ProductCard from "./Product/ProductCard";
@@ -9,10 +9,8 @@ function Categories() {
     useContext(ProductContext);
 
   useEffect(() => {
-    if (products === undefined) {
-      fetchProducts();
-      getCategories();
-    }
+    fetchProducts();
+    getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

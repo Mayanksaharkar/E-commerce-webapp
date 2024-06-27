@@ -22,14 +22,12 @@ function CategoryPage() {
             <ClipLoader color='#333C4D' />
           </div>
         ) : (
-          <div>
-            {catProds
-              .filter((prod: Product) => prod.category === category)
-              .map((prod: Product, index: Key) => (
-                <div key={index}>
-                  <ProductCard product={prod} />
-                </div>
-              ))}
+          <div className='grid grid-cols-4 gap-4'>
+            {catProds.map((prod: Product, index: Key) => (
+              <div key={index}>
+                <ProductCard product={prod} />
+              </div>
+            ))}
           </div>
         )}
       </div>

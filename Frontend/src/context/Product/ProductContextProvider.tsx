@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-import { Products, Product } from "../../Models/Product";
-
 import { createContext } from "react";
-import { useNavigate } from "react-router-dom";
 export const ProductContext = createContext(0);
 
 function ProductContextProvider({ children }) {
-  const [products, setProducts] = useState<Products>();
-  const [featuredProd, setFeaturedProd] = useState<Products>();
+  const [products, setProducts] = useState();
+  const [featuredProd, setFeaturedProd] = useState();
 
-  const [catProds, setCatProds] = useState<Products>([]);
+  const [catProds, setCatProds] = useState([]);
 
   const [categories, setCategories] = useState([]);
   const [currProduct, setCurrProduct] = useState();
@@ -19,6 +16,7 @@ function ProductContextProvider({ children }) {
 
   useEffect(() => {
     handleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
 
   const handleSearch = async () => {
@@ -90,7 +88,7 @@ function ProductContextProvider({ children }) {
     }
   };
 
-  const getProdById = async (id: string) => {
+  const getProdById = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/product/${id}`, {
         method: "GET",
@@ -106,12 +104,12 @@ function ProductContextProvider({ children }) {
     }
   };
 
-  const getByCategory = async (category: string) => {
+  const getByCategory = async (category) => {
     // const result = products?.filter((prod) => prod.category === category);
     // return result;
     try {
       const response = await fetch(
-        `http://localhost:3000/product/${categories}`,
+        `http://localhost:3000/product/${category}`,
         {
           method: "GET",
           headers: {

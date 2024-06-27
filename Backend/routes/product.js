@@ -16,7 +16,7 @@ const {
 router.get("/", get_all_products);
 router.get("/featuredproduct", get_featured_products);
 router.post("/", protect, add_product);
-router.get("/:category", get_prods_by_category);
+router.get("/category/:category", get_prods_by_category);
 router.get("/categories", get_categories);
 router.get("/:id", get_prod_by_id);
 router.put("/:id", protect, admin, update_prod_by_id);

@@ -11,17 +11,16 @@ import { LiaCameraSolid } from "react-icons/lia";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const { featuredProd, fetchFeaturedProducts } = useContext(ProductContext);
+  const { featuredProd, fetchFeaturedProducts, fetchProducts } =
+    useContext(ProductContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchFeaturedProducts();
-    console.log(featuredProd);
+    fetchProducts();
+    fetch;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    fetchFeaturedProducts();
   }, []);
 
   return (
