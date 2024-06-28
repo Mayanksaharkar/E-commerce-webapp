@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
-import { disabled } from "@material-tailwind/react/types/components/accordion";
 import CheckOut from "./CheckOut";
 
 function Cart() {

@@ -15,6 +15,7 @@ import CartContextProvider from "./context/Cart/CartContext";
 import UserContextProvider from "./context/User/UserContext";
 import SearchResult from "./components/pages/SearchResult";
 import CategoryPage from "./components/pages/CategoryPage";
+import PaymentContextProvider from "./context/Payment/PaymentContext";
 function App() {
   const router = createBrowserRouter([
     {
@@ -69,7 +70,9 @@ function App() {
       <AuthContextProvider>
         <ProductContextProvider>
           <CartContextProvider>
-            <RouterProvider router={router} />
+            <PaymentContextProvider>
+              <RouterProvider router={router} />
+            </PaymentContextProvider>
           </CartContextProvider>
         </ProductContextProvider>
       </AuthContextProvider>

@@ -1,42 +1,54 @@
-const { PaymentGateway } = require("@cashfreepayments/cashfree-sdk");
-const pg = new PaymentGateway({
-  env: "TEST",
+const Instamojo = require("instamojo-payment-nodejs");
+const Payments = require("../models/Payments");
 
-  appId: process.env.CLIENT_ID,
+Instamojo.isSandboxMode(true); // For testing
 
-  secretKey: process.env.CLIENT_SECRET,
-});
+Instamojo.setKeys(process.env.API_KEY, process.env.AUTH_KEY);
+
 exports.checkout = async (req, res) => {
-  const { customerName, orderId, orderAmount, customerEmail, customerPhone } =
-    req.body;
-
-  console.log(req.body);
-
   try {
-    pg.orders
+    const { amt, email, phone, name } = req.body;
+    const options = {
+      purpose: "Shopping",
+      amount: amt,
+      currency: "INR",
+      buyer_name: name,
+      email: email,
+      phone: phone,
+      send_email: false,
+      send_sms: false,
+      allow_repeated_payments: false,
+      webhook: "",
+      redirect_url: "http://localhost:5173/",
+    };
 
-      .createOrders({
-        orderId: orderId,
+    const paymentData = Instamojo.PaymentData(options);
 
-        orderAmount: orderAmount,
+    const response = await Instamojo.createNewPaymentRequest(paymentData);
+    // console.log(await response.payment_request.longurl);
 
-        orderCurrency: "INR",
+    return await res.json(response.payment_request.longurl);
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: "Something Went Wrong" });
+  }
+};
 
-        orderNote: "dwada",
+exports.AddPaymentData = async (req, res) => {
+  try {
+    const { payment_id, payment_status, uid } = req.body;
 
-        customerName: customerName,
+    let payment = await Payments.findOne({ payment_id });
 
-        customerPhone: "8421056849",
-
-        customerEmail: "mayank@gmail.com",
-
-        returnUrl: "http://localhost:5173/",
-      })
-      .then((data) => {
-        console.log(data);
-        res.json({ message: "orderCreate", orderData: data });
-      });
+    if (!payment) {
+      payment = new Payments({ payment_id, payment_status, user: uid });
+      await payment.save();
+      return res.status(200).json({ message: "Data Added" });
+    } else {
+      return res.status(409).json({ message: "Payment Already Entered" });
+    }
   } catch (error) {
     console.error(error);
+    return res.status(500).json({ message: "Something Went Wrong" });
   }
 };

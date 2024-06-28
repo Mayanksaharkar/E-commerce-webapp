@@ -8,13 +8,38 @@ import { CiMobile3 } from "react-icons/ci";
 import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { PiTelevisionSimple } from "react-icons/pi";
 import { LiaCameraSolid } from "react-icons/lia";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { PaymentContext } from "../../../context/Payment/PaymentContext";
 
 function Home() {
+  const { AddPaymentData } = useContext(PaymentContext);
   const { featuredProd, fetchFeaturedProducts, fetchProducts } =
     useContext(ProductContext);
 
+  const location = useLocation();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getUrlParameter = (name) => {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+      const results = regex.exec(location.search);
+      return results === null
+        ? ""
+        : decodeURIComponent(results[1].replace(/\+/g, " "));
+    };
+
+    const payment_status = getUrlParameter("payment_status");
+
+    if (payment_status === "Credit") {
+      alert("Payment was successful!");
+      const payment_id = getUrlParameter("payment_id");
+      AddPaymentData(payment_id, payment_status);
+      console.log(`Payment ID: ${payment_id}`);
+      navigate("/");
+    }
+  }, [location]);
 
   useEffect(() => {
     fetchFeaturedProducts();
