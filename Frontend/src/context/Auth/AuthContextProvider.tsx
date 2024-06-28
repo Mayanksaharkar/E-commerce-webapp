@@ -52,11 +52,7 @@ const AuthContextProvider = ({ children }) => {
     const res = await response.json();
     localStorage.setItem("token", res.authToken);
     localStorage.setItem("uid", res.userId);
-    if (response.status === 200) {
-      const res = await response.json();
-      localStorage.setItem("token", res.authToken);
-      setIsLoggedIn(true);
-    }
+    setIsLoggedIn(true);
     getUserData();
   };
 
