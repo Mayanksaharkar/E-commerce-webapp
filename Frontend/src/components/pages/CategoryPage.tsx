@@ -5,11 +5,15 @@ import ProductCard from "./Product/ProductCard";
 import { Product, Products } from "../../Models/Product";
 import { ClipLoader } from "react-spinners";
 import { product } from "../../Models/Cart";
+import PaginateItem from "./PaginateItem";
+import Pagination from "./Pagination";
 
 function CategoryPage() {
   const { catProds, getByCategory, getFormattedString } =
     useContext(ProductContext);
   const [prods, setProds] = useState<Products>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { category } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +27,15 @@ function CategoryPage() {
   useEffect(() => {
     getByCategory(category);
   }, []);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const itemsPerPage = 20;
+
+  const currentProducts = catProds.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
@@ -39,16 +52,19 @@ function CategoryPage() {
                 {getFormattedString(category)}
               </h3>
               <p className='lg:text-lg text-sm'>
-                Discover Top Brands, Compare Prices, and Find the Perfect Mobile
+                Discover Top Brands, Compare Prices, and Find the Perfect One
                 for You
               </p>
             </div>
-            <div className='flex flex-row h-full flex-wrap justify-around gap-3'>
-              {catProds.map((prod: Product, index: Key) => (
-                <div key={index}>
-                  <ProductCard product={prod} />
-                </div>
-              ))}
+            <PaginateItem catProds={currentProducts} />
+
+            <div className=''>
+              <Pagination
+                catProds={catProds}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                itemsPerPage={itemsPerPage}
+              />
             </div>
           </div>
         )}

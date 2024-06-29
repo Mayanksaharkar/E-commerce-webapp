@@ -19,7 +19,20 @@ export default {
       backdropBlur: ["responsive"],
     },
   },
-  plugins: [daisyui],
+  plugins: [
+    daisyui,
+    function ({ addUtilities }) {
+      addUtilities({
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none" /* IE and Edge */,
+          "scrollbar-width": "none" /* Firefox */,
+        },
+      });
+    },
+  ],
   daisyui: {
     themes: [
       {

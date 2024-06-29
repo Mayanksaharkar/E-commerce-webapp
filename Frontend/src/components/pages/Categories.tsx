@@ -3,10 +3,8 @@ import { ClipLoader } from "react-spinners";
 import { ProductContext } from "../../context/Product/ProductContextProvider";
 import ProductCard from "./Product/ProductCard";
 import { Product } from "../../Models/Product";
-import { FaArrowRight } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import Scrollbars from "react-custom-scrollbars-2";
 
 function Categories() {
   const {
@@ -24,6 +22,7 @@ function Categories() {
     getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const renderedBrands = new Set<string>();
 
   return (
     <div className='w-full mt-4 '>
@@ -53,14 +52,20 @@ function Categories() {
 
               <div
                 style={{
-                  scrollbarWidth: "thin",
-
                   scrollSnapType: " x mandatory",
                 }}
-                className='w-full flex gap-5 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x no-scrollbar'
+                className='no-scrollbar w-full flex  gap-5 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x no-scrollbar'
               >
                 {products
                   .filter((prod: Product) => prod.category === category)
+                  .filter((prod: Product) => {
+                    if (renderedBrands.has(prod.brand)) {
+                      return false;
+                    } else {
+                      renderedBrands.add(prod.brand);
+                      return true;
+                    }
+                  })
                   .map((filteredProd: Product, prodIndex: React.Key) => (
                     <div key={prodIndex} style={{ scrollSnapAlign: "start" }}>
                       <ProductCard product={filteredProd} />

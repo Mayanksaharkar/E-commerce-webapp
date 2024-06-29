@@ -10,7 +10,7 @@ function FeaturedProductCard({ product }) {
         <img
           src={product?.cover_img}
           alt='Product Image'
-          className='object-cover max-h-52 mix-blend-multiply'
+          className='object-contain h-52 mix-blend-multiply'
         />
       </div>
       <div className='font-semibold font-sans  flex-row px-4 py-2'>
@@ -18,7 +18,9 @@ function FeaturedProductCard({ product }) {
         <p className='line-clamp-1 text-lg my-3  overflow-hidden'>
           {product?.title}
         </p>
-        <p className='py-1 text-3xl'>₹ {product?.price?.toLocaleString()}</p>
+        <p className='py-1 lg:text-3xl text-xl'>
+          ₹ {product?.price?.toLocaleString()}
+        </p>
       </div>
       <div>
         <button

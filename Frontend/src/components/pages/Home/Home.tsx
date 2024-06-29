@@ -41,7 +41,7 @@ function Home() {
       const payment_id = getUrlParameter("payment_id");
       AddPaymentData(payment_id, payment_status);
       console.log(`Payment ID: ${payment_id}`);
-      
+
       navigate("/");
     }
   }, [location]);
@@ -49,7 +49,7 @@ function Home() {
   useEffect(() => {
     fetchFeaturedProducts();
     fetchProducts();
-    fetch;
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -128,13 +128,7 @@ function Home() {
                 navigate("/categories/homeAppliances");
               }}
             />
-            <LiaCameraSolid
-              size={80}
-              className='cursor-pointer hover:text-secondary px-4 py-2 rounded-lg'
-              onClick={() => {
-                navigate("/categories/cameras");
-              }}
-            />
+            
           </div>
         </div>
       </div>
