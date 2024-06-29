@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { CartContext } from "../../../context/Cart/CartContext";
+import { toast } from "react-toastify";
+
 function FeaturedProductCard({ product }) {
+  const { add_to_cart, fetchAllItems } = useContext(CartContext);
   return (
     <div className='pt-3 col-span-1 flex-row justify-center items-center text-center rounded-2xl bg-base-100'>
       <div className='w-full max-h-56 justify-center flex px-4'>
@@ -16,7 +21,23 @@ function FeaturedProductCard({ product }) {
         <p className='py-1 text-3xl'>₹ {product?.price?.toLocaleString()}</p>
       </div>
       <div>
-        <button className='btn w-full rounded-t-none text-lg'>
+        <button
+          className='btn w-full rounded-t-none text-lg'
+          onClick={async (e) => {
+            e.preventDefault();
+            const res = await add_to_cart(
+              localStorage.getItem("uid"),
+              product?._id,
+              1
+            );
+            if (res === 200) {
+              toast.success("Item has been added to Cart!");
+            } else {
+              toast.error("Somthing Went Wrong");
+            }
+            await fetchAllItems();
+          }}
+        >
           Add To Cart
         </button>
       </div>

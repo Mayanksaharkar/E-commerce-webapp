@@ -21,27 +21,32 @@ function PaymentContextProvider({ children }) {
     });
     const res = await response.json();
     console.log(res);
-    return res
+    return res;
   };
 
   const AddPaymentData = async (payment_id: string, payment_status: string) => {
-    const response = await fetch(
-      `http://localhost:3000/payment/${payment_id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          payment_id,
-          payment_status,
-          uid: localStorage.getItem("uid"),
-        }),
-      }
-    );
-    const res = await response.json();
-    console.log(res);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/payment/${payment_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            payment_id,
+            payment_status,
+            uid: localStorage.getItem("uid"),
+          }),
+        }
+      );
+      const res = await response.json();
+
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

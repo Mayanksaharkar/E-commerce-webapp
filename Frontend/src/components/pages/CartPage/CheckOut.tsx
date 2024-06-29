@@ -3,7 +3,8 @@ import { CartContext } from "../../../context/Cart/CartContext";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
 
 function CheckOut() {
-  const { items, currCartId, totalCost } = useContext(CartContext);
+  const { items, currCartId, totalCost, removeAllItems } =
+    useContext(CartContext);
 
   const { makePayment } = useContext(PaymentContext);
 
@@ -11,6 +12,7 @@ function CheckOut() {
     try {
       const link = await makePayment();
       console.log(link);
+      await removeAllItems(localStorage.getItem("uid"));
       await window.open(link, "_self");
     } catch (error) {
       console.error(error);

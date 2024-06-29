@@ -104,12 +104,12 @@ function ProductContextProvider({ children }) {
     }
   };
 
-  const getByCategory = async (category) => {
+  const getByCategory = async (category: string) => {
     // const result = products?.filter((prod) => prod.category === category);
     // return result;
     try {
       const response = await fetch(
-        `http://localhost:3000/product/${category}`,
+        `http://localhost:3000/product/category/${category}`,
         {
           method: "GET",
           headers: {
@@ -125,6 +125,14 @@ function ProductContextProvider({ children }) {
       console.log(error);
     }
   };
+  function getFormattedString(str: string) {
+    const parts = str.split(/(?=[A-Z])/);
+    const capitalizedParts = parts.map(
+      (part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+    );
+    const result = capitalizedParts.join(" ");
+    return result;
+  }
 
   return (
     <ProductContext.Provider
@@ -147,6 +155,7 @@ function ProductContextProvider({ children }) {
         fetchFeaturedProducts,
         catProds,
         setCatProds,
+        getFormattedString,
       }}
     >
       {children}

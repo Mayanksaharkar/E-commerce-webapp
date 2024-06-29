@@ -6,11 +6,12 @@ const {
   get_cart_items,
   update_cart_item,
   remove_cart_item,
+  removeItems,
 } = require("../controllers/cart_controller");
 
 router.post("/", protect, add_to_cart);
 router.get("/:uid", protect, get_cart_items);
-
+router.post("/removeItems", protect, removeItems);
 router
   .route("/:id")
   .put(protect, update_cart_item)

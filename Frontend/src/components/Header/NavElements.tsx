@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
+import { toast } from "react-toastify";
 
 function NavElements() {
   const { isLoggedIn, setIsLoggedIn, currUserId } = useContext(AuthContext);
@@ -65,6 +66,7 @@ function NavElements() {
                   localStorage.removeItem("token");
                   localStorage.removeItem("uid");
                   setIsLoggedIn(false);
+                  toast.success("User Logged Out");
                 }}
               >
                 Logout

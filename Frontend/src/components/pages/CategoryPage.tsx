@@ -4,11 +4,21 @@ import { ProductContext } from "../../context/Product/ProductContextProvider";
 import ProductCard from "./Product/ProductCard";
 import { Product, Products } from "../../Models/Product";
 import { ClipLoader } from "react-spinners";
+import { product } from "../../Models/Cart";
 
 function CategoryPage() {
-  const { catProds, getByCategory } = useContext(ProductContext);
+  const { catProds, getByCategory, getFormattedString } =
+    useContext(ProductContext);
   const [prods, setProds] = useState<Products>([]);
   const { category } = useParams();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (catProds) setIsLoading(false);
+    }, 1000);
+  }, [isLoading]);
 
   useEffect(() => {
     getByCategory(category);
@@ -16,18 +26,30 @@ function CategoryPage() {
 
   return (
     <>
-      <div>
-        {!catProds ? (
+      <div className='w-full flex justify-center items-center'>
+        {isLoading ? (
           <div>
             <ClipLoader color='#333C4D' />
           </div>
         ) : (
-          <div className='grid grid-cols-4 gap-4'>
-            {catProds.map((prod: Product, index: Key) => (
-              <div key={index}>
-                <ProductCard product={prod} />
-              </div>
-            ))}
+          <div>
+            <div className='flex-col w-full justify-center text-center py-10 text-secondary font-serif bg-base-200 rounded-lg my-2'>
+              <h3 className='lg:text-3xl text-xl'>
+                Explore the Latest and Greatest in{" "}
+                {getFormattedString(category)}
+              </h3>
+              <p className='lg:text-lg text-sm'>
+                Discover Top Brands, Compare Prices, and Find the Perfect Mobile
+                for You
+              </p>
+            </div>
+            <div className='flex flex-row h-full flex-wrap justify-around gap-3'>
+              {catProds.map((prod: Product, index: Key) => (
+                <div key={index}>
+                  <ProductCard product={prod} />
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

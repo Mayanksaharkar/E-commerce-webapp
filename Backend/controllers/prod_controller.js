@@ -72,6 +72,7 @@ exports.add_product = async (req, res) => {
 exports.get_prods_by_category = async (req, res) => {
   try {
     const { category } = req.params;
+
     let products = await Products.find({ category });
 
     if (products.length !== 0) {

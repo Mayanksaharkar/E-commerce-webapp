@@ -114,10 +114,10 @@ function Cart() {
                   </svg>
                 </div>
                 <span className='text-center w-full sm:w-1/5 font-semibold text-sm mt-2 sm:mt-0'>
-                  ₹ {item.product?.price}
+                  ₹ {item.product?.price.toLocaleString()}
                 </span>
                 <span className='text-center w-full sm:w-1/5 font-semibold text-sm mt-2 sm:mt-0'>
-                  ₹ {item.product.price * item.qty}
+                  ₹ {(item.product.price * item.qty).toLocaleString()}
                 </span>
               </div>
             ))}
@@ -145,7 +145,9 @@ function Cart() {
               <span className='font-semibold text-sm uppercase'>
                 Items {items.length}
               </span>
-              <span className='font-semibold text-sm'>₹ {itemCost}</span>
+              <span className='font-semibold text-sm'>
+                ₹ {itemCost.toLocaleString()}
+              </span>
             </div>
             <div>
               <label className='font-medium inline-block mb-3 text-sm uppercase'>
@@ -163,7 +165,7 @@ function Cart() {
             <div className='border-t mt-8'>
               <div className='flex font-semibold justify-between py-6 text-sm uppercase'>
                 <span>Total cost</span>
-                <span>₹ {totalCost}</span>
+                <span>₹ {totalCost.toLocaleString()}</span>
               </div>
               <CheckOut />
             </div>

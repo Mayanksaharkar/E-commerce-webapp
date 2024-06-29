@@ -10,11 +10,15 @@ import { PiTelevisionSimple } from "react-icons/pi";
 import { LiaCameraSolid } from "react-icons/lia";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
+import { toast } from "react-toastify";
+import { CartContext } from "../../../context/Cart/CartContext";
 
 function Home() {
   const { AddPaymentData } = useContext(PaymentContext);
   const { featuredProd, fetchFeaturedProducts, fetchProducts } =
     useContext(ProductContext);
+
+  const { removeAllItems, currCartId, fetchAllItems } = useContext(CartContext);
 
   const location = useLocation();
 
@@ -33,10 +37,11 @@ function Home() {
     const payment_status = getUrlParameter("payment_status");
 
     if (payment_status === "Credit") {
-      alert("Payment was successful!");
+      toast.success("Payment was successful!");
       const payment_id = getUrlParameter("payment_id");
       AddPaymentData(payment_id, payment_status);
       console.log(`Payment ID: ${payment_id}`);
+      
       navigate("/");
     }
   }, [location]);
@@ -50,7 +55,7 @@ function Home() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <div className='w-full my-3  bg-black relative rounded-xl'>
           <img
             src='HomePageImg.jpeg'
@@ -79,7 +84,7 @@ function Home() {
               ))}
             </div>
           ) : (
-            <div className='w-full h-full flex justify-center items-center'>
+            <div className='w-full h-44 flex justify-center items-center'>
               <ClipLoader color='#000000' />
             </div>
           )}

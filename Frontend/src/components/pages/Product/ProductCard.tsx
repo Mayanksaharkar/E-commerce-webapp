@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 function ProductCard({ product }) {
   return (
-    <div className='min-w-64'>
-      <div className='cursor-pointer mx-auto mt-11 w-80 transform overflow-hidden rounded-lg bg-white  shadow-2xl duration-300 hover:scale-105 hover:shadow-lg'>
+    <div className='lg:min-w-64 md:min-w-52 min-w-44'>
+      <div className='cursor-pointer mx-auto mt-11 lg:w-64 md:w-52 w-44 transform overflow-hidden rounded-lg bg-white  shadow-2xl duration-300 hover:scale-105 hover:shadow-lg'>
         <img
           className='h-48 w-full object-contain rounded-md object-center'
           src={product.cover_img}
@@ -14,14 +14,14 @@ function ProductCard({ product }) {
             {product.title}
           </h2>
 
-          <div className='flex items-center'>
+          <div className='flex items-center lg:flex-row md:flex-row flex-col lg:justify-between justify-center'>
             <p className='mr-2 text-lg font-semibold text-primary-content '>
               ₹ {product.price?.toLocaleString()}
             </p>
 
             <Link
               to={`/product/${product._id}`}
-              className='  ml-auto text-base font-medium text-primary-content'
+              className='text-base font-medium text-center text-primary-content'
             >
               view more
             </Link>

@@ -8,6 +8,7 @@ import { ProductContext } from "../../../context/Product/ProductContextProvider"
 import { CartContext } from "../../../context/Cart/CartContext";
 import { AuthContext } from "../../../context/Auth/AuthContext";
 import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 function ProductPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,15 +17,24 @@ function ProductPage() {
 
   const { currProduct, getProdById } = useContext(ProductContext);
 
-  const { add_to_cart } = useContext(CartContext);
+  const { add_to_cart, fetchAllItems } = useContext(CartContext);
 
   const { isLoggedIn, currUserId } = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const handleAddToCart = async () => {
-    await add_to_cart(currUserId, currProduct._id, 1);
+    const res = await add_to_cart(currUserId, currProduct._id, 1);
+    if (res === 200) {
+      toast.success("Item has been added to Cart!");
+    } else {
+      toast.error("Somthing Went Wrong");
+    }
+    await fetchAllItems();
   };
 
-  const navigate = useNavigate();
+  const handleBuyNowClick = async () => {
+    handleAddToCart();
+    navigate(`/cart/${localStorage.getItem("uid")}`);
+  };
 
   useEffect(() => {
     getProdById(productId);
@@ -58,7 +68,7 @@ function ProductPage() {
               <div className='flex -mx-2 mb-4'>
                 <div className='w-1/2 px-2'>
                   <button
-                    className='w-full bg-base-content text-base-100 py-4 px-4 rounded-xl font-bold'
+                    className='w-full btn  bg-secondary text-base-100 hover:text-secondary py-4 px-4 rounded-xl font-bold'
                     onClick={(e) => {
                       e.preventDefault();
                       if (isLoggedIn) {
@@ -72,7 +82,14 @@ function ProductPage() {
                   </button>
                 </div>
                 <div className='w-1/2 px-2'>
-                  <button className='w-full text-base-content bg-base-300 py-4 px-4 rounded-xl font-bold'>
+                  <button
+                    className='w-full btn text-base-content bg-base-300 py-4 px-4 rounded-xl font-bold'
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      handleBuyNowClick();
+                    }}
+                  >
                     Buy Now
                   </button>
                 </div>
@@ -146,16 +163,19 @@ function ProductPage() {
               )}
 
               <div className='w-full '>
-                {currProduct.desc_long && (
+                {currProduct.desc_long !== null &&
+                currProduct.desc_long.length > 0 ? (
                   <>
-                    <span className='font-bold text-2xl  text-base-content text-right'>
+                    <span className='font-bold text-2xl text-base-content text-right'>
                       Product Description:
                     </span>
-
                     <DescAccordian Description={currProduct.desc_long} />
                   </>
+                ) : (
+                  <></>
                 )}
-                {currProduct.specification && (
+                {currProduct.specification !== null &&
+                currProduct.specification.length > 0 ? (
                   <div>
                     <span className='font-bold text-2xl text-base-content text-right'>
                       Product Specifications:
@@ -163,6 +183,8 @@ function ProductPage() {
 
                     <SpecTable specifications={currProduct.specification} />
                   </div>
+                ) : (
+                  <></>
                 )}
                 <p className='text-base-content text-sm mt-2'></p>
               </div>

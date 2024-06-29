@@ -38,22 +38,33 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const login = async (user: LoginCredential) => {
-    console.log();
-    const response = await fetch(`${base_url}/login`, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        email: user.email,
-        password: user.password,
-      }),
-    });
-    const res = await response.json();
-    localStorage.setItem("token", res.authToken);
-    localStorage.setItem("uid", res.userId);
-    setIsLoggedIn(true);
-    getUserData();
+    try {
+      console.log();
+      const response = await fetch(`${base_url}/login`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          password: user.password,
+        }),
+      });
+      const res = await response.json();
+      console.log(response.status);
+      if (response.status === 200) {
+        localStorage.setItem("token", res.authToken);
+        localStorage.setItem("uid", res.userId);
+        setIsLoggedIn(true);
+        getUserData();
+      }
+      return response.status;
+
+      // return 200;
+    } catch (error) {
+      return 500;
+    }
+    // return
   };
 
   const register = async (newUser: NewUser) => {
@@ -75,6 +86,7 @@ const AuthContextProvider = ({ children }) => {
       setIsLoggedIn(true);
     }
     getUserData();
+    return response.status;
   };
 
   return (

@@ -90,3 +90,23 @@ exports.remove_cart_item = async (req, res) => {
     return res.status(500).json({ message: "Somthing Went Wrong" });
   }
 };
+
+exports.removeItems = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    const cart = await Cart.findOne({ user: userId });
+
+    if (cart) {
+      if (!cart.cartItems || cart.cartItems.length === 0) {
+        return res.json({ message: "No Cart Items" });
+      }
+      cart.cartItems = [];
+      await cart.save();
+      return res.json({ message: "Cart Item Removed" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.json({ error: error });
+  }
+};

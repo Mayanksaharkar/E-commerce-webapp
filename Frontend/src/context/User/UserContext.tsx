@@ -35,8 +35,8 @@ function UserContextProvider({ children }) {
         body: JSON.stringify(userInfo),
       }
     );
-    const res = await response.json();
-    // if (response.status === 200) fetchUserInfo();
+    
+    return response.status;
   };
 
   return (

@@ -13,6 +13,10 @@ function CartContextProvider({ children }) {
   const [currCartId, setCurrCartId] = useState("");
 
   useEffect(() => {
+    fetchAllItems();
+  }, []);
+
+  useEffect(() => {
     let cost = 0;
     for (let i = 0; i < items.length; i++) {
       cost = cost + items[i].product.price * items[i].qty;
@@ -36,8 +40,8 @@ function CartContextProvider({ children }) {
           qty: qty,
         }),
       });
-      const res = response.json;
-      return res;
+
+      return response.status;
     } catch (error) {
       console.log(error);
     }
@@ -113,6 +117,27 @@ function CartContextProvider({ children }) {
     }
   };
 
+  const removeAllItems = async (userId: string) => {
+    try {
+      console.log(userId);
+      const response = fetch("http://localhost:3000/cart/removeItems", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          userId: userId,
+        }),
+      });
+      const res = (await response).json();
+      console.log(res);
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -127,6 +152,7 @@ function CartContextProvider({ children }) {
         setTotalCost,
         currCartId,
         setCurrCartId,
+        removeAllItems,
       }}
     >
       {children}

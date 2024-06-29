@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { CartContext } from "../../context/Cart/CartContext";
+
 function CartIcon() {
+  const { items } = useContext(CartContext);
+  
   return (
     <div className='flex-none gap-4'>
       <div className='dropdown dropdown-end'>
@@ -23,7 +28,7 @@ function CartIcon() {
               />
             </svg>
             <span className='badge badge-sm indicator-item bg-transparent border-none text-secondary'>
-              8
+              {items.length}
             </span>
           </div>
         </div>
