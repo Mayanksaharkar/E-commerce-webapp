@@ -75,6 +75,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
       const data = await response.json();
 
       setProducts(data);
+      console.log(data);
       // setIsLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -82,7 +83,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
   };
   const getCategories = async () => {
     try {
-      const response = await fetch(`${url}/categories`, {
+      const response = await fetch(`${url}/product/categories`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -136,8 +137,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
     const capitalizedParts = parts.map(
       (part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
     );
-    const result = capitalizedParts.join(" ");
-    return result;
+    return capitalizedParts.join(" ");
   }
 
   const ProductContextValue: ProductContextType = {

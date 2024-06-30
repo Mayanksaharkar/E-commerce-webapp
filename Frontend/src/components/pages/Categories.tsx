@@ -22,7 +22,6 @@ function Categories() {
     getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const renderedBrands = new Set<string>();
 
   return (
     <div className='w-full mt-4 '>
@@ -57,8 +56,9 @@ function Categories() {
                 className=' w-full flex  gap-5 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x no-scrollbar'
               >
                 {products
-                  .filter((prod: Product) => prod.category === category)
-                  .filter((prod: Product) => {
+                  .filter((prod) => prod.category === category)
+                  .filter((prod) => {
+                    const renderedBrands = new Set<string>();
                     if (renderedBrands.has(prod.brand)) {
                       return false;
                     } else {

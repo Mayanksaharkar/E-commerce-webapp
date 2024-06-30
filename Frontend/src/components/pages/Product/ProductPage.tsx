@@ -36,7 +36,7 @@ function ProductPage() {
   };
 
   const handleBuyNowClick = async () => {
-    handleAddToCart();
+    await handleAddToCart();
     navigate(`/cart/${localStorage.getItem("uid")}`);
   };
 

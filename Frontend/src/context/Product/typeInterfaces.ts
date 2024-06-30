@@ -20,7 +20,6 @@ export interface ProductContextType {
   setResultEle: React.Dispatch<React.SetStateAction<Product[]>>;
   categories: string[];
   setCategories: React.Dispatch<React.SetStateAction<string[]>>;
-  
 
   handleSearch: () => Promise<void>;
   getFormattedString: (str: string) => string;

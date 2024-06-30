@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { CartContext } from "../Cart/CartContext";
-import { AuthContext } from "../../context/Auth/AuthContextProvider";
+import { AuthContext } from "../Auth/AuthContextProvider.tsx";
 import url from "../url";
 import {
   PaymentContextProviderProps,

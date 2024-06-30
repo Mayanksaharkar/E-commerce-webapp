@@ -24,9 +24,7 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
   useEffect(() => {
     let cost = 0;
     for (let i = 0; i < items.length; i++) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      cost = cost + (items[i].price as number) * (items[i].qty as number);
+      cost = cost + items[i].product.price * items[i].qty;
     }
     setItemCost(cost);
   }, [items]);
@@ -56,13 +54,16 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
 
   const fetchAllItems = async () => {
     try {
-      const response = await fetch(`${url}/${localStorage.getItem("uid")}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      });
+      const response = await fetch(
+        `${url}/cart/${localStorage.getItem("uid")}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
 
       const res = await response.json();
       setItems(res.cartItems || []);
@@ -74,7 +75,7 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
 
   const removeItem = async (itemId: string) => {
     try {
-      const response = await fetch(`${url}/${itemId}`, {
+      const response = await fetch(`${url}/cart/${itemId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -98,7 +99,7 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
     try {
       console.log(qty, id, localStorage.getItem("uid"));
 
-      const response = await fetch(`${url}/${id}`, {
+      const response = await fetch(`${url}/cart/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

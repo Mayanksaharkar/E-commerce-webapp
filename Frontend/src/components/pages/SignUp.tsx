@@ -77,7 +77,7 @@ function SignUp() {
               className='relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20'
               onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
                 e.preventDefault();
-                handleSubmit();
+                await handleSubmit();
               }}
             >
               <div className='max-w-md mx-auto'>
