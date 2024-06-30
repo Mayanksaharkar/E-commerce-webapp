@@ -1,8 +1,14 @@
+import { Product } from "../../Models/Product";
 const Pagination = ({
   catProds,
   currentPage,
   setCurrentPage,
   itemsPerPage,
+}: {
+  catProds: Product[];
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  itemsPerPage: number;
 }) => {
   const handleNextPage = () => {
     if (currentPage < Math.ceil(catProds.length / itemsPerPage)) {

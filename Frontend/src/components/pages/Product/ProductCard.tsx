@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-function ProductCard({ product }) {
+import { Product } from "../../../Models/Product";
+
+function ProductCard({ product }: { product: Product }) {
   return (
     <div className='lg:min-w-64 md:min-w-52 min-w-44 ml-2'>
       <div className='cursor-pointer mx-auto mt-11 lg:w-64 md:w-52 w-44 transform overflow-hidden rounded-lg bg-white  shadow-2xl duration-300 hover:scale-105 hover:shadow-lg'>

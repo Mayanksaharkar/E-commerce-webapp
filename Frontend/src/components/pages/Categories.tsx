@@ -54,7 +54,7 @@ function Categories() {
                 style={{
                   scrollSnapType: " x mandatory",
                 }}
-                className='no-scrollbar w-full flex  gap-5 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x no-scrollbar'
+                className=' w-full flex  gap-5 max-w-full  overflow-y-hidden border rounded-md border-red px-2 py-2 snap-y snap-mandatory overflow-x no-scrollbar'
               >
                 {products
                   .filter((prod: Product) => prod.category === category)

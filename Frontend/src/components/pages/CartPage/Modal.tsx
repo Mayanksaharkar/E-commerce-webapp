@@ -1,17 +1,28 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useRef } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 
-function Modal(props) {
-  const { currItemId, currItemQty, setCurrItemQty } = props;
+function Modal(props: {
+  currItemId: string;
+  currItemQty: number;
+  setCurrItemQty: React.Dispatch<React.SetStateAction<number>>;
+  modalRef: React.LegacyRef<HTMLDialogElement>;
+}) {
+  const { currItemId, currItemQty, setCurrItemQty, modalRef } = props;
 
   const { updateQty } = useContext(CartContext);
 
+  const CloseBtn = useRef<HTMLButtonElement>(null);
+
   const handleUpdate = () => {
     updateQty(currItemQty, currItemId);
-    document.getElementById("closeBtn").click();
+    CloseBtn?.current?.click();
   };
   return (
-    <dialog id='my_modal_3' className='modal modal-bottom sm:modal-middle'>
+    <dialog
+      id='my_modal_3'
+      className='modal modal-bottom sm:modal-middle'
+      ref={modalRef}
+    >
       <div className='modal-box'>
         <form className=' w-full h-full mt-4'>
           <div className='flex flex-col w-full h-full justify-center align-middle'>
@@ -25,7 +36,7 @@ function Modal(props) {
                   value={currItemQty}
                   min={1}
                   onChange={(e) => {
-                    setCurrItemQty(e.target.value);
+                    setCurrItemQty(parseInt(e.target.value));
                   }}
                 />
               </label>
@@ -46,7 +57,7 @@ function Modal(props) {
         </form>
         <div className='modal-action'>
           <form method='dialog'>
-            <button className='btn' id='closeBtn'>
+            <button className='btn' id='closeBtn' ref={CloseBtn}>
               Close
             </button>
           </form>

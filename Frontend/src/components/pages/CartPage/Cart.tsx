@@ -1,4 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+  ChangeEventHandler,
+} from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
@@ -14,25 +20,32 @@ function Cart() {
     setTotalCost,
   } = useContext(CartContext);
 
+  const modalRef = useRef<HTMLDialogElement>(null);
+
   useEffect(() => {
     fetchAllItems();
     setTotalCost(shippingCost + itemCost);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemCost]);
 
-  const [currItemId, setCurrItemId] = useState(null);
-  const [currItemQty, setCurrItemQty] = useState(null);
+  const [currItemId, setCurrItemId] = useState<string>("");
+  const [currItemQty, setCurrItemQty] = useState<number>(0);
   const [shippingCost, setShippingCost] = useState(199);
 
   const navigate = useNavigate();
 
-  const handleModalOpen = async (itemId, itemQty) => {
-    await setCurrItemId((prevItemId) => itemId);
-    await setCurrItemQty((prevItemQty) => itemQty);
-    document.getElementById("my_modal_3").showModal();
+  const handleModalOpen = async (itemId: string, itemQty: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setCurrItemId((_prevItemId) => itemId);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setCurrItemQty((_prevItemQty) => itemQty);
+
+    modalRef?.current?.showModal();
   };
 
-  const handleShippingChange = (e) => {
-    setShippingCost(parseInt(e.target.value));
+  const handleShippingChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    const target = e.target as HTMLSelectElement;
+    setShippingCost(parseInt(target.value));
   };
 
   return (
@@ -42,6 +55,7 @@ function Cart() {
           currItemQty={currItemQty}
           currItemId={currItemId}
           setCurrItemQty={setCurrItemQty}
+          modalRef={modalRef}
         />
       )}
 

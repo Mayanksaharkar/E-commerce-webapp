@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../context/Auth/AuthContext";
+import { AuthContext } from "../../context/Auth/AuthContextProvider";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -11,7 +11,7 @@ function SignIn() {
     email: "",
     password: "",
   });
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prev) => ({
       ...prev,

@@ -1,13 +1,18 @@
-import { useEffect, createContext, useState } from "react";
+import { createContext, useState } from "react";
+import url from "../url";
+import { UserContextPropsType, UserContextType } from "./typeInterfaces";
+import { User } from "../../Models/User";
 
-export const UserContext = createContext(0);
+export const UserContext = createContext<UserContextType>(
+  {} as UserContextType
+);
 
-function UserContextProvider({ children }) {
-  const [userInfo, setUserInfo] = useState();
+function UserContextProvider({ children }: UserContextPropsType) {
+  const [userInfo, setUserInfo] = useState<User>({} as User);
 
   const fetchUserInfo = async () => {
     const response = await fetch(
-      `http://localhost:3000/auth/profile/${localStorage.getItem("uid")}`,
+      `${url}/auth/profile/${localStorage.getItem("uid")}`,
       {
         method: "GET",
         headers: {
@@ -25,7 +30,7 @@ function UserContextProvider({ children }) {
     console.log(userInfo);
 
     const response = await fetch(
-      `http://localhost:3000/auth/profile/${localStorage.getItem("uid")}`,
+      `${url}/auth/profile/${localStorage.getItem("uid")}`,
       {
         method: "PUT",
         headers: {
@@ -35,14 +40,19 @@ function UserContextProvider({ children }) {
         body: JSON.stringify(userInfo),
       }
     );
-    
+
     return response.status;
   };
 
+  const UserContextValue = {
+    fetchUserInfo,
+    userInfo,
+    setUserInfo,
+    updateInfo,
+  };
+
   return (
-    <UserContext.Provider
-      value={{ fetchUserInfo, userInfo, setUserInfo, updateInfo }}
-    >
+    <UserContext.Provider value={UserContextValue}>
       {children}
     </UserContext.Provider>
   );

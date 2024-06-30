@@ -1,4 +1,6 @@
-function SpecTable({ specifications }) {
+import { spec } from "../../../Models/Product";
+
+function SpecTable({ specifications }: { specifications: spec[] }) {
   return (
     <ul className='max-h-96 overflow-y-scroll '>
       {specifications.map((spec, index) => (

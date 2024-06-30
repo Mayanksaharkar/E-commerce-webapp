@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { useContext, useEffect } from "react";
 import { ProductContext } from "../../../context/Product/ProductContextProvider";
 import FeaturedProductCard from "./FeaturedProductCard";
@@ -7,25 +8,22 @@ import { IoIosLaptop } from "react-icons/io";
 import { CiMobile3 } from "react-icons/ci";
 import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { PiTelevisionSimple } from "react-icons/pi";
-import { LiaCameraSolid } from "react-icons/lia";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
 import { toast } from "react-toastify";
-import { CartContext } from "../../../context/Cart/CartContext";
 
 function Home() {
   const { AddPaymentData } = useContext(PaymentContext);
   const { featuredProd, fetchFeaturedProducts, fetchProducts } =
     useContext(ProductContext);
 
-  const { removeAllItems, currCartId, fetchAllItems } = useContext(CartContext);
-
   const location = useLocation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getUrlParameter = (name) => {
+    const getUrlParameter = (name: string) => {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
       const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
       const results = regex.exec(location.search);
@@ -44,6 +42,7 @@ function Home() {
 
       navigate("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   useEffect(() => {
@@ -128,7 +127,6 @@ function Home() {
                 navigate("/categories/homeAppliances");
               }}
             />
-            
           </div>
         </div>
       </div>

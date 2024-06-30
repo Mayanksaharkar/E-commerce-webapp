@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { NewUser } from "../../Models/User";
-import { AuthContext } from "../../context/Auth/AuthContext";
+import { AuthContext } from "../../context/Auth/AuthContextProvider";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -28,7 +28,7 @@ function SignUp() {
     setFormValid(isValid);
   }, [newUser]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewUser((prev) => ({
       ...prev,
@@ -47,8 +47,7 @@ function SignUp() {
     setFormValid(false);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (formValid) {
       const res = await register(newUser);
 
@@ -76,7 +75,10 @@ function SignUp() {
             <div className='absolute inset-0 bg-gradient-to-r from-primary-content to-secondary shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl'></div>
             <form
               className='relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20'
-              onSubmit={handleSubmit}
+              onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
             >
               <div className='max-w-md mx-auto'>
                 <div>

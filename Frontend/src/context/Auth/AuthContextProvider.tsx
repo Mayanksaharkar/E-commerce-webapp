@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
-import { AuthContext } from "./AuthContext.js";
 import { NewUser, LoginCredential, User } from "../../Models/User.js";
-const AuthContextProvider = ({ children }) => {
-  const base_url = "http://127.0.0.1:3000/auth";
+import url from "../url.js";
 
+import { createContext } from "react";
+import { AuthContextProviderProps, AuthContextType } from "./typeInterfaces.js";
+
+export const AuthContext = createContext<AuthContextType>(
+  {} as AuthContextType
+);
+
+const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [currUser, setCurrUser] = useState<User>();
+  const [currUser, setCurrUser] = useState<User>({} as User);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -15,12 +22,13 @@ const AuthContextProvider = ({ children }) => {
     getUserData().then(() => {
       console.log(currUser);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUserData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/auth/${localStorage.getItem("uid")}`,
+        `${url}/auth/${localStorage.getItem("uid")}`,
         {
           method: "GET",
           headers: {
@@ -32,6 +40,7 @@ const AuthContextProvider = ({ children }) => {
       const res = await response.json();
       console.log(res);
       setCurrUser(res);
+      return;
     } catch (error) {
       console.error(error);
     }
@@ -40,7 +49,7 @@ const AuthContextProvider = ({ children }) => {
   const login = async (user: LoginCredential) => {
     try {
       console.log();
-      const response = await fetch(`${base_url}/login`, {
+      const response = await fetch(`${url}/auth/login`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -56,7 +65,7 @@ const AuthContextProvider = ({ children }) => {
         localStorage.setItem("token", res.authToken);
         localStorage.setItem("uid", res.userId);
         setIsLoggedIn(true);
-        getUserData();
+        await getUserData();
       }
       return response.status;
 
@@ -68,7 +77,7 @@ const AuthContextProvider = ({ children }) => {
   };
 
   const register = async (newUser: NewUser) => {
-    const response = await fetch(`${base_url}/register`, {
+    const response = await fetch(`${url}/auth/register`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -85,21 +94,23 @@ const AuthContextProvider = ({ children }) => {
       localStorage.setItem("uid", res.uid);
       setIsLoggedIn(true);
     }
-    getUserData();
+    await getUserData();
     return response.status;
   };
 
+  const authContextValue: AuthContextType = {
+    isLoggedIn: isLoggedIn,
+    currUser: {} as User,
+    login,
+    register,
+    getUserData,
+    setIsLoggedIn,
+    setCurrUser,
+    
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn,
-        setIsLoggedIn,
-        login,
-        register,
-        getUserData,
-        currUser,
-      }}
-    >
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,7 +3,7 @@ import { ProductContext } from "../../context/Product/ProductContextProvider";
 import { Product } from "../../Models/Product";
 
 function SearchResult() {
-  const { searchInput, resultEle, setResultEle } = useContext(ProductContext);
+  const { searchInput, resultEle } = useContext(ProductContext);
 
   return (
     <div>
@@ -22,7 +22,7 @@ function SearchResult() {
 
 export default SearchResult;
 
-const ResultProdCard = ({ product }) => {
+const ResultProdCard = ({ product }: { product: Product }) => {
   return (
     <>
       <div className='flex flex-col md:flex-row items-center bg-background rounded-lg shadow-lg overflow-hidden'>

@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { CartContext } from "../../context/Cart/CartContext";
 
-function CartIcon() {
+const CartIcon: React.FC = () => {
   const { items } = useContext(CartContext);
-  
+
   return (
     <div className='flex-none gap-4'>
       <div className='dropdown dropdown-end'>
@@ -35,6 +35,6 @@ function CartIcon() {
       </div>
     </div>
   );
-}
+};
 
 export default CartIcon;

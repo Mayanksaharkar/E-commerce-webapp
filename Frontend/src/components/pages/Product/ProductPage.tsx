@@ -6,7 +6,7 @@ import { useEffect, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProductContext } from "../../../context/Product/ProductContextProvider";
 import { CartContext } from "../../../context/Cart/CartContext";
-import { AuthContext } from "../../../context/Auth/AuthContext";
+import { AuthContext } from "../../../context/Auth/AuthContextProvider";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
@@ -19,10 +19,14 @@ function ProductPage() {
 
   const { add_to_cart, fetchAllItems } = useContext(CartContext);
 
-  const { isLoggedIn, currUserId } = useContext(AuthContext);
+  const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleAddToCart = async () => {
-    const res = await add_to_cart(currUserId, currProduct._id, 1);
+    const res = await add_to_cart(
+      localStorage.getItem("uid") || "",
+      currProduct._id,
+      1
+    );
     if (res === 200) {
       toast.success("Item has been added to Cart!");
     } else {
@@ -37,7 +41,8 @@ function ProductPage() {
   };
 
   useEffect(() => {
-    getProdById(productId);
+    getProdById(productId || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   setTimeout(() => {

@@ -1,18 +1,28 @@
 import { useEffect, useState } from "react";
 import { createContext } from "react";
-export const ProductContext = createContext(0);
+import url from "../url";
 
-function ProductContextProvider({ children }) {
-  const [products, setProducts] = useState();
-  const [featuredProd, setFeaturedProd] = useState();
+import {
+  ProductContextProviderProps,
+  ProductContextType,
+} from "./typeInterfaces";
+import { Product } from "../../Models/Product";
 
-  const [catProds, setCatProds] = useState([]);
+export const ProductContext = createContext<ProductContextType>(
+  {} as ProductContextType
+);
 
-  const [categories, setCategories] = useState([]);
-  const [currProduct, setCurrProduct] = useState();
+function ProductContextProvider({ children }: ProductContextProviderProps) {
+  const [products, setProducts] = useState<Product[]>([] as Product[]);
+  const [featuredProd, setFeaturedProd] = useState([] as Product[]);
+
+  const [catProds, setCatProds] = useState([] as Product[]);
+
+  const [categories, setCategories] = useState([] as string[]);
+  const [currProduct, setCurrProduct] = useState<Product>({} as Product);
 
   const [searchInput, setSearchInput] = useState("");
-  const [resultEle, setResultEle] = useState([]);
+  const [resultEle, setResultEle] = useState([] as Product[]);
 
   useEffect(() => {
     handleSearch();
@@ -24,28 +34,26 @@ function ProductContextProvider({ children }) {
       setResultEle([]);
     }
 
-    const filteredProducts = products?.filter(
-      (product) =>
-        product.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-        product.brand.toLowerCase().includes(searchInput.toLowerCase()) ||
-        product.category.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const filteredProducts = products
+      ? products.filter(
+          (product) =>
+            product.title.toLowerCase().includes(searchInput.toLowerCase()) ||
+            product.brand.toLowerCase().includes(searchInput.toLowerCase()) ||
+            product.category.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : [];
 
     setResultEle(filteredProducts);
   };
 
-  const base_url = "http://localhost:3000/product/";
   const fetchFeaturedProducts = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:3000/product/featuredproduct",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${url}/product/featuredproduct`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const data = await response.json();
 
@@ -57,7 +65,7 @@ function ProductContextProvider({ children }) {
   };
   const fetchProducts = async () => {
     try {
-      const response = await fetch(base_url, {
+      const response = await fetch(`${url}/product`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +82,7 @@ function ProductContextProvider({ children }) {
   };
   const getCategories = async () => {
     try {
-      const response = await fetch(`${base_url}categories`, {
+      const response = await fetch(`${url}/categories`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -88,9 +96,9 @@ function ProductContextProvider({ children }) {
     }
   };
 
-  const getProdById = async (id) => {
+  const getProdById = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/product/${id}`, {
+      const response = await fetch(`${url}/product/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -108,15 +116,12 @@ function ProductContextProvider({ children }) {
     // const result = products?.filter((prod) => prod.category === category);
     // return result;
     try {
-      const response = await fetch(
-        `http://localhost:3000/product/category/${category}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${url}/product/category/${category}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.status === 200) {
         const res = await response.json();
         setCatProds(res);
@@ -125,6 +130,7 @@ function ProductContextProvider({ children }) {
       console.log(error);
     }
   };
+
   function getFormattedString(str: string) {
     const parts = str.split(/(?=[A-Z])/);
     const capitalizedParts = parts.map(
@@ -134,30 +140,32 @@ function ProductContextProvider({ children }) {
     return result;
   }
 
+  const ProductContextValue: ProductContextType = {
+    products: [],
+    setProducts: setProducts,
+    categories,
+    setCategories,
+    fetchProducts,
+    getCategories,
+    featuredProd,
+    fetchFeaturedProducts,
+    catProds,
+    setCatProds,
+    getFormattedString,
+    getProdById,
+    currProduct,
+    searchInput,
+    setSearchInput,
+    handleSearch,
+    resultEle,
+    setFeaturedProd,
+    setCurrProduct,
+    setResultEle,
+    getByCategory,
+  };
+
   return (
-    <ProductContext.Provider
-      value={{
-        getByCategory,
-        products,
-        setProducts,
-        categories,
-        setCategories,
-        fetchProducts,
-        getCategories,
-        getProdById,
-        currProduct,
-        searchInput,
-        setSearchInput,
-        handleSearch,
-        resultEle,
-        setResultEle,
-        featuredProd,
-        fetchFeaturedProducts,
-        catProds,
-        setCatProds,
-        getFormattedString,
-      }}
-    >
+    <ProductContext.Provider value={ProductContextValue}>
       {children}
     </ProductContext.Provider>
   );

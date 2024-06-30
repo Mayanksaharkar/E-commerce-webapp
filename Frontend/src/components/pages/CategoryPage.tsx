@@ -1,17 +1,16 @@
-import { Key, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProductContext } from "../../context/Product/ProductContextProvider";
-import ProductCard from "./Product/ProductCard";
-import { Product, Products } from "../../Models/Product";
+
 import { ClipLoader } from "react-spinners";
-import { product } from "../../Models/Cart";
+
 import PaginateItem from "./PaginateItem";
 import Pagination from "./Pagination";
 
 function CategoryPage() {
   const { catProds, getByCategory, getFormattedString } =
     useContext(ProductContext);
-  const [prods, setProds] = useState<Products>([]);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const { category } = useParams();
@@ -22,13 +21,13 @@ function CategoryPage() {
     setTimeout(() => {
       if (catProds) setIsLoading(false);
     }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   useEffect(() => {
-    getByCategory(category);
+    getByCategory(category || "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const itemsPerPage = 20;
 
@@ -49,7 +48,7 @@ function CategoryPage() {
             <div className='flex-col w-full justify-center text-center py-10 text-secondary font-serif bg-base-200 rounded-lg my-2'>
               <h3 className='lg:text-3xl text-xl'>
                 Explore the Latest and Greatest in{" "}
-                {getFormattedString(category)}
+                {getFormattedString(category || "")}
               </h3>
               <p className='lg:text-lg text-sm'>
                 Discover Top Brands, Compare Prices, and Find the Perfect One

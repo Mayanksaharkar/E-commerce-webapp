@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { createContext, useState, useEffect } from "react";
-import { CartItems } from "../../Models/Cart";
-export const CartContext = createContext(0);
+import { CartItem } from "../../Models/Cart";
+import { CartContextProviderProps, CartContextType } from "./typeInterfaces";
+import url from "../url";
 
-function CartContextProvider({ children }) {
-  const baseUrl = "http://localhost:3000/cart/";
+export const CartContext = createContext<CartContextType>(
+  {} as CartContextType
+);
 
-  const [items, setItems] = useState<CartItems>([]);
+const CartContextProvider = ({ children }: CartContextProviderProps) => {
+  const [items, setItems] = useState<CartItem[]>([]);
 
   const [totalCost, setTotalCost] = useState(0);
   const [itemCost, setItemCost] = useState(0);
@@ -13,20 +18,22 @@ function CartContextProvider({ children }) {
   const [currCartId, setCurrCartId] = useState("");
 
   useEffect(() => {
-    fetchAllItems();
+    fetchAllItems().then();
   }, []);
 
   useEffect(() => {
     let cost = 0;
     for (let i = 0; i < items.length; i++) {
-      cost = cost + items[i].product.price * items[i].qty;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      cost = cost + (items[i].price as number) * (items[i].qty as number);
     }
     setItemCost(cost);
   }, [items]);
 
   const add_to_cart = async (userID: string, prodId: string, qty: number) => {
     try {
-      const response = await fetch(baseUrl, {
+      const response = await fetch(`${url}/cart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,16 +56,13 @@ function CartContextProvider({ children }) {
 
   const fetchAllItems = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/cart/${localStorage.getItem("uid")}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await fetch(`${url}/${localStorage.getItem("uid")}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
 
       const res = await response.json();
       setItems(res.cartItems || []);
@@ -70,7 +74,7 @@ function CartContextProvider({ children }) {
 
   const removeItem = async (itemId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/cart/${itemId}`, {
+      const response = await fetch(`${url}/${itemId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -82,9 +86,8 @@ function CartContextProvider({ children }) {
           },
         }),
       });
-      const res = response.json();
       if (response.status === 200) {
-        fetchAllItems();
+        await fetchAllItems();
       }
     } catch (error) {
       console.error(error);
@@ -95,7 +98,7 @@ function CartContextProvider({ children }) {
     try {
       console.log(qty, id, localStorage.getItem("uid"));
 
-      const response = await fetch(`http://localhost:3000/cart/${id}`, {
+      const response = await fetch(`${url}/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -108,12 +111,13 @@ function CartContextProvider({ children }) {
           },
         }),
       });
-      const res = await response.json();
       if (response.status === 200) {
         await fetchAllItems();
+        return response.status;
       }
     } catch (error) {
       console.log(error);
+      return 500;
     }
   };
 
@@ -132,31 +136,29 @@ function CartContextProvider({ children }) {
       });
       const res = (await response).json();
       console.log(res);
-      return;
     } catch (error) {
       console.error(error);
     }
   };
+  const cartContextValue: CartContextType = {
+    items: items,
+    totalCost: totalCost,
+    setTotalCost: setTotalCost,
+    itemCost: itemCost,
+    setItemCost: setItemCost,
+    currCartId: currCartId,
+    setCurrCartId: setCurrCartId,
+    fetchAllItems: fetchAllItems,
+    add_to_cart,
+    removeAllItems: removeAllItems,
+    removeItem,
+    updateQty,
+  };
 
   return (
-    <CartContext.Provider
-      value={{
-        add_to_cart,
-        items,
-        fetchAllItems,
-        totalCost,
-        updateQty,
-        removeItem,
-        itemCost,
-        setItemCost,
-        setTotalCost,
-        currCartId,
-        setCurrCartId,
-        removeAllItems,
-      }}
-    >
+    <CartContext.Provider value={cartContextValue}>
       {children}
     </CartContext.Provider>
   );
-}
+};
 export default CartContextProvider;

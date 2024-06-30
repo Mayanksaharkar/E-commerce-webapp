@@ -1,14 +1,17 @@
 import { useState } from "react";
-function DescAccordian({ Description }) {
-  const [activeIndex, setActiveIndex] = useState(null);
+import { desc } from "../../../Models/Product";
+function DescAccordian(props: { Description: desc[] }) {
+  const { Description } = props;
 
-  const handleClick = (index) => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleClick = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
     <div className='max-w-lg mx-auto my-2'>
-      {Description.map((desc, index) => (
+      {Description.map((desc: desc, index: number) => (
         <div
           key={index}
           className='accordion-item bg-white border border-gray-200 rounded-lg mb-1'
@@ -42,7 +45,7 @@ function DescAccordian({ Description }) {
               activeIndex === index ? "max-h-screen" : "max-h-0"
             }`}
           >
-            <p className='text-gray-600'>{desc.discription}</p>
+            <p className='text-gray-600'>{desc.description}</p>
           </div>
         </div>
       ))}

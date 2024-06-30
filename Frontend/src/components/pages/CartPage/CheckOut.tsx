@@ -1,10 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
 
 function CheckOut() {
-  const { items, currCartId, totalCost, removeAllItems } =
-    useContext(CartContext);
+  const { items, removeAllItems } = useContext(CartContext);
 
   const { makePayment } = useContext(PaymentContext);
 
@@ -12,8 +11,11 @@ function CheckOut() {
     try {
       const link = await makePayment();
       console.log(link);
-      await removeAllItems(localStorage.getItem("uid"));
-      await window.open(link, "_self");
+
+      const uid = localStorage.getItem("uid") || "";
+      removeAllItems(uid);
+
+      window.open(link, "_self");
     } catch (error) {
       console.error(error);
     }
@@ -23,9 +25,9 @@ function CheckOut() {
     <button
       className='bg-secondary-content font-semibold btn hover:text-secondary-content rounded-lg py-3 text-sm text-white uppercase w-full'
       disabled={items.length === 0}
-      onClick={(e) => {
+      onClick={async (e) => {
         e.preventDefault();
-        handlePayment();
+        await handlePayment();
       }}
     >
       Checkout

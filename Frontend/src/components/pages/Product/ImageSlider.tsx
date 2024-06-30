@@ -1,8 +1,10 @@
 // src/ImageSlider.js
 
-import React, { useState } from "react";
+import { useState } from "react";
 
-const ImageSlider = ({ images }) => {
+const ImageSlider = (props: { images: string[] }) => {
+  const { images } = props;
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {

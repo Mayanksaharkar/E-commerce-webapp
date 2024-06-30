@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { toast } from "react-toastify";
+import { Product } from "../../../Models/Product";
 
-function FeaturedProductCard({ product }) {
+function FeaturedProductCard(props: { product: Product }) {
+  const { product } = props;
   const { add_to_cart, fetchAllItems } = useContext(CartContext);
   return (
     <div className='pt-3 col-span-1 flex-row justify-center items-center text-center rounded-2xl bg-base-100'>
@@ -28,7 +30,7 @@ function FeaturedProductCard({ product }) {
           onClick={async (e) => {
             e.preventDefault();
             const res = await add_to_cart(
-              localStorage.getItem("uid"),
+              localStorage.getItem("uid") || "",
               product?._id,
               1
             );
