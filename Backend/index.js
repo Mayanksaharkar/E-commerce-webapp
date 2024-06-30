@@ -5,7 +5,15 @@ const app = express();
 const cors = require("cors");
 
 app.use(express.json());
+
+const cors = require("cors");
 app.use(cors());
+
+app.use(
+  cors({
+    origin: "https://e-commerce-webapp-gamma.vercel.app/",
+  })
+);
 
 connect_to_mongo();
 
