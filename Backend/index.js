@@ -11,7 +11,7 @@ app.use(cors());
 
 app.use(
   cors({
-    origin: "https://e-commerce-webapp-gamma.vercel.app/",
+    origin: "https://e-commerce-webapp-zook.vercel.app/",
   })
 );
 
