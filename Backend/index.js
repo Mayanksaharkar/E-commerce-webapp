@@ -6,7 +6,7 @@ const cors = require("cors");
 
 app.use(express.json());
 
-app.use(cors());
+
 
 const corsOrigin = {
   origin: "https://e-commerce-webapp-zook.vercel.app/",
