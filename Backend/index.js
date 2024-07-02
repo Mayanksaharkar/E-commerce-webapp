@@ -5,13 +5,7 @@ const app = express();
 const cors = require("cors");
 
 app.use(express.json());
-
-const corsOrigin = {
-  origin: "https://e-commerce-webapp-zook.vercel.app/",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-};
-
-app.use(cors(corsOrigin));
+app.use(cors());
 
 connect_to_mongo();
 
