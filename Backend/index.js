@@ -8,11 +8,13 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use(
-  cors({
-    origin: "https://e-commerce-webapp-gamma.vercel.app/",
-  })
-);
+const corsOrigin = {
+  origin: "https://e-commerce-webapp-zook.vercel.app/",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+};
+
+app.use(cors(corsOrigin));
 
 connect_to_mongo();
 
