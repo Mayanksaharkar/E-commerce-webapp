@@ -6,26 +6,14 @@ const cors = require("cors");
 
 app.use(express.json());
 
-
-
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://e-commerce-webapp-zook.vercel.app/'
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+const corsOrigin = {
+  origin: process.env.CORS_ORIGIN.replace(/\/$/, ""),
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOrigin));
+app.options('*', cors(corsOrigin));
 
 
 connect_to_mongo();
