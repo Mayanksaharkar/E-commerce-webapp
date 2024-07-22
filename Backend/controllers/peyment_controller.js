@@ -19,7 +19,7 @@ exports.checkout = async (req, res) => {
       send_sms: false,
       allow_repeated_payments: false,
       webhook: "",
-      redirect_url: "http://localhost:5173/",
+      redirect_url: "https://e-commerce-webapp-zook.vercel.app/",
     };
 
     const paymentData = Instamojo.PaymentData(options);
