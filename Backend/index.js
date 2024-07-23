@@ -7,7 +7,7 @@ const cors = require("cors");
 app.use(express.json());
 
 const corsOrigin = {
-  origin: process.env.CORS_ORIGIN.replace(/\/$/, ""),
+  origin: [process.env.CORS_ORIGIN.replace(/\/$/, ""), "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 };
