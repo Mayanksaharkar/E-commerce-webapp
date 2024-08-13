@@ -4,22 +4,35 @@ const Pagination = ({
   currentPage,
   setCurrentPage,
   itemsPerPage,
+  setIsLoading,
+
 }: {
   catProds: Product[];
   currentPage: number;
   setCurrentPage: (page: number) => void;
   itemsPerPage: number;
+  setIsLoading: (loading: boolean) => void;
+ 
 }) => {
   const handleNextPage = () => {
+
+    setIsLoading(true);
     if (currentPage < Math.ceil(catProds.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   const handlePreviousPage = () => {
+    setIsLoading(true);
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   };
 
   return (

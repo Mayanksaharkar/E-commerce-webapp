@@ -6,6 +6,10 @@ export interface ProductContextProviderProps {
 }
 
 export interface ProductContextType {
+
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+
   products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   featuredProd: Product[];

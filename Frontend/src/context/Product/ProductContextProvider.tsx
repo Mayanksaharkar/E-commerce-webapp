@@ -13,6 +13,9 @@ export const ProductContext = createContext<ProductContextType>(
 );
 
 function ProductContextProvider({ children }: ProductContextProviderProps) {
+
+  const [isLoading , setIsLoading] = useState(true);
+
   const [products, setProducts] = useState<Product[]>([] as Product[]);
   const [featuredProd, setFeaturedProd] = useState([] as Product[]);
 
@@ -116,6 +119,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
   const getByCategory = async (category: string) => {
     // const result = products?.filter((prod) => prod.category === category);
     // return result;
+    setIsLoading(true)
     try {
       const response = await fetch(`${url}/product/category/${category}`, {
         method: "GET",
@@ -126,10 +130,15 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
       if (response.status === 200) {
         const res = await response.json();
         setCatProds(res);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
     }
+   
+      
+    
+
   };
 
   function getFormattedString(str: string) {
@@ -141,6 +150,8 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
   }
 
   const ProductContextValue: ProductContextType = {
+    isLoading,
+    setIsLoading,
     products: [],
     setProducts: setProducts,
     categories,

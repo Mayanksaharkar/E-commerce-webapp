@@ -8,21 +8,26 @@ import PaginateItem from "./PaginateItem";
 import Pagination from "./Pagination";
 
 function CategoryPage() {
-  const { catProds, getByCategory, getFormattedString } =
-    useContext(ProductContext);
+  const {
+    catProds,
+    getByCategory,
+    getFormattedString,
+    isLoading,
+    setIsLoading,
+  } = useContext(ProductContext);
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const { category } = useParams();
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (catProds) setIsLoading(false);
-    }, 1000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (catProds) setIsLoading(false);
+  //   }, 1000);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isLoading]);
 
   useEffect(() => {
     getByCategory(category || "");
@@ -38,31 +43,32 @@ function CategoryPage() {
 
   return (
     <>
-      <div className='w-full flex justify-center items-center'>
+      <div className="w-full flex justify-center items-center">
         {isLoading ? (
           <div>
-            <ClipLoader color='#333C4D' />
+            <ClipLoader color="#333C4D" />
           </div>
         ) : (
           <div>
-            <div className='flex-col w-full justify-center text-center py-10 text-secondary font-serif bg-base-200 rounded-lg my-2'>
-              <h3 className='lg:text-3xl text-xl'>
+            <div className="flex-col w-full justify-center text-center py-10 text-secondary font-serif bg-base-200 rounded-lg my-2">
+              <h3 className="lg:text-3xl text-xl">
                 Explore the Latest and Greatest in{" "}
                 {getFormattedString(category || "")}
               </h3>
-              <p className='lg:text-lg text-sm'>
+              <p className="lg:text-lg text-sm">
                 Discover Top Brands, Compare Prices, and Find the Perfect One
                 for You
               </p>
             </div>
             <PaginateItem catProds={currentProducts} />
 
-            <div className=''>
+            <div className="">
               <Pagination
                 catProds={catProds}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 itemsPerPage={itemsPerPage}
+                setIsLoading={setIsLoading}
               />
             </div>
           </div>
