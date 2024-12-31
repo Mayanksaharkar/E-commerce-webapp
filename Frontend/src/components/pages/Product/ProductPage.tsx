@@ -10,7 +10,11 @@ import { AuthContext } from "../../../context/Auth/AuthContextProvider";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
+
 function ProductPage() {
+
+  const nav = useNavigate();
+
   const [isLoading, setIsLoading] = useState(true);
 
   const { productId } = useParams();
@@ -22,17 +26,23 @@ function ProductPage() {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleAddToCart = async () => {
-    const res = await add_to_cart(
-      localStorage.getItem("uid") || "",
-      currProduct._id,
-      1
-    );
-    if (res === 200) {
-      toast.success("Item has been added to Cart!");
+    if (localStorage.getItem("uid") === null) {
+      console.log(isLoggedIn);
+      toast.error("Please Login First");
+      nav("/signin");
     } else {
-      toast.error("Somthing Went Wrong");
+      const res = await add_to_cart(
+        localStorage.getItem("uid") || "",
+        currProduct._id,
+        1
+      );
+      if (res === 200) {
+        toast.success("Item has been added to Cart!");
+      } else {
+        toast.error("Somthing Went Wrong");
+      }
+      await fetchAllItems();
     }
-    await fetchAllItems();
   };
 
   const handleBuyNowClick = async () => {
@@ -52,28 +62,28 @@ function ProductPage() {
   }, 2000);
 
   return (
-    <div className='pt-4'>
+    <div className="pt-4">
       {isLoading ? (
-        <ClipLoader color='#000000' />
+        <ClipLoader color="#000000" />
       ) : (
-        <div className='max-w-[70vw] mx-auto px-4 sm:px-6 lg:px-8'>
-          <div className='flex flex-col md:flex-row -mx-4'>
-            <aside className='md:flex-1 self-start lg:sticky lg:top-36 w-full'>
-              <div className='h-[460px] w-full rounded-lg bg-white mb-4'>
+        <div className="max-w-[70vw] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row -mx-4">
+            <aside className="md:flex-1 self-start lg:sticky lg:top-36 w-full">
+              <div className="h-[460px] w-full rounded-lg bg-white mb-4">
                 {currProduct.img_list.length > 0 ? (
                   <ImageSlider images={currProduct?.img_list} />
                 ) : (
                   <img
-                    src='https://grafgearboxes.com/productos/images/df.jpg'
-                    className='w-full h-full rounded-lg object-contain'
-                    alt=''
+                    src="https://grafgearboxes.com/productos/images/df.jpg"
+                    className="w-full h-full rounded-lg object-contain"
+                    alt=""
                   />
                 )}{" "}
               </div>
-              <div className='flex -mx-2 mb-4'>
-                <div className='w-1/2 px-2'>
+              <div className="flex -mx-2 mb-4">
+                <div className="w-1/2 px-2">
                   <button
-                    className='w-full btn  bg-secondary text-base-100 hover:text-secondary py-4 px-4 rounded-xl font-bold'
+                    className="w-full btn  bg-secondary text-base-100 hover:text-secondary py-4 px-4 rounded-xl font-bold"
                     onClick={(e) => {
                       e.preventDefault();
                       if (isLoggedIn) {
@@ -86,9 +96,9 @@ function ProductPage() {
                     Add to Cart
                   </button>
                 </div>
-                <div className='w-1/2 px-2'>
+                <div className="w-1/2 px-2">
                   <button
-                    className='w-full btn text-base-content bg-base-300 py-4 px-4 rounded-xl font-bold'
+                    className="w-full btn text-base-content bg-base-300 py-4 px-4 rounded-xl font-bold"
                     onClick={(e) => {
                       e.preventDefault();
 
@@ -100,15 +110,15 @@ function ProductPage() {
                 </div>
               </div>
             </aside>
-            <div className='md:flex-1 lg:px-4'>
-              <h2 className='text-lg lg:text-3xl   font-bold text-base-content mb-2  drop-shadow-xl '>
+            <div className="md:flex-1 lg:px-4">
+              <h2 className="text-lg lg:text-3xl   font-bold text-base-content mb-2  drop-shadow-xl ">
                 {currProduct?.title}
               </h2>
 
-              <div className='flex mb-4'>
+              <div className="flex mb-4">
                 {currProduct.price ? (
-                  <div className='mr-4'>
-                    <span className='font-bold text-accent lg:text-3xl text-lg'>
+                  <div className="mr-4">
+                    <span className="font-bold text-accent lg:text-3xl text-lg">
                       ₹ {currProduct?.price.toLocaleString()}
                     </span>
                   </div>
@@ -116,35 +126,35 @@ function ProductPage() {
                   <></>
                 )}
                 <div>
-                  <span className='font-bold text-base-content'>
+                  <span className="font-bold text-base-content">
                     Availability: {"      "}
                   </span>
                   {currProduct.price ? (
-                    <span className='text-base-content'>In Stock</span>
+                    <span className="text-base-content">In Stock</span>
                   ) : (
-                    <span className='text-secondary text-lg'>Out Of Stock</span>
+                    <span className="text-secondary text-lg">Out Of Stock</span>
                   )}
                 </div>
               </div>
               {currProduct.rating && (
-                <div className='px-3 py-1 bg-secondary w-min rounded text-white font-bold flex gap-1 items-center'>
+                <div className="px-3 py-1 bg-secondary w-min rounded text-white font-bold flex gap-1 items-center">
                   <span>{currProduct.rating} </span>
                   <span>
                     <svg
-                      version='1.0'
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='16'
-                      height='14'
-                      viewBox='0 0 1280.000000 1218.000000'
-                      preserveAspectRatio='xMidYMid meet'
+                      version="1.0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="14"
+                      viewBox="0 0 1280.000000 1218.000000"
+                      preserveAspectRatio="xMidYMid meet"
                     >
                       <g
-                        transform='translate(0.000000,1218.000000) scale(0.100000,-0.100000)'
-                        fill='#ffffff'
-                        stroke='none'
+                        transform="translate(0.000000,1218.000000) scale(0.100000,-0.100000)"
+                        fill="#ffffff"
+                        stroke="none"
                       >
                         <path
-                          d='M6368 12168 c-9 -7 -46 -107 -83 -223 -37 -115 -84 -264 -105 -330
+                          d="M6368 12168 c-9 -7 -46 -107 -83 -223 -37 -115 -84 -264 -105 -330
 -21 -66 -89 -277 -150 -470 -61 -192 -130 -406 -152 -475 -22 -69 -70 -222
 -108 -340 -64 -200 -87 -272 -192 -600 -22 -69 -70 -222 -108 -340 -38 -118
 -87 -272 -109 -342 -23 -71 -59 -185 -82 -255 -22 -71 -71 -225 -109 -343 -38
@@ -159,7 +169,7 @@ function ProductPage() {
 263 193 568 412 2041 1467 3281 2360 3318 2390 46 38 52 61 23 87 -18 16 -121
 17 -1782 7 -970 -6 -2061 -12 -2423 -13 l-660 -3 -248 775 c-136 426 -254 795
 -262 820 -19 60 -91 285 -514 1610 -198 619 -379 1186 -403 1260 -23 74 -49
-143 -57 153 -18 20 -42 22 -64 5z'
+143 -57 153 -18 20 -42 22 -64 5z"
                         />
                       </g>
                     </svg>
@@ -167,11 +177,11 @@ function ProductPage() {
                 </div>
               )}
 
-              <div className='w-full '>
+              <div className="w-full ">
                 {currProduct.desc_long !== null &&
                 currProduct.desc_long.length > 0 ? (
                   <>
-                    <span className='font-bold text-2xl text-base-content text-right'>
+                    <span className="font-bold text-2xl text-base-content text-right">
                       Product Description:
                     </span>
                     <DescAccordian Description={currProduct.desc_long} />
@@ -182,7 +192,7 @@ function ProductPage() {
                 {currProduct.specification !== null &&
                 currProduct.specification.length > 0 ? (
                   <div>
-                    <span className='font-bold text-2xl text-base-content text-right'>
+                    <span className="font-bold text-2xl text-base-content text-right">
                       Product Specifications:
                     </span>
 
@@ -191,7 +201,7 @@ function ProductPage() {
                 ) : (
                   <></>
                 )}
-                <p className='text-base-content text-sm mt-2'></p>
+                <p className="text-base-content text-sm mt-2"></p>
               </div>
             </div>
           </div>
