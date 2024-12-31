@@ -19,6 +19,7 @@ function ProductCard({ product }: { product: Product }) {
           <div className='flex items-center lg:flex-row md:flex-row flex-col lg:justify-between justify-center'>
             <p className='mr-2 text-lg font-semibold text-primary-content '>
               ₹ {product.price?.toLocaleString()}
+              {/* test */}
             </p>
 
             <Link
