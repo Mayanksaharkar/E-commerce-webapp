@@ -19,9 +19,11 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     if (localStorage.getItem("token")) {
       setIsLoggedIn(true);
     }
-    getUserData().then(() => {
-      console.log(currUser);
-    });
+    if (localStorage.getItem("uid") && isLoggedIn) {
+      getUserData().then(() => {
+        console.log(currUser);
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -106,7 +108,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     getUserData,
     setIsLoggedIn,
     setCurrUser,
-    
+
   };
 
   return (

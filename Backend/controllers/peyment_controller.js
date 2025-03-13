@@ -1,7 +1,7 @@
 const Instamojo = require("instamojo-payment-nodejs");
 const Payments = require("../models/Payments");
 
-Instamojo.isSandboxMode(true); // For testing
+Instamojo.isSandboxMode(true);
 
 Instamojo.setKeys(process.env.API_KEY, process.env.AUTH_KEY);
 
@@ -23,11 +23,11 @@ exports.checkout = async (req, res) => {
     };
 
     const paymentData = Instamojo.PaymentData(options);
-
+    console.log(paymentData);
     const response = await Instamojo.createNewPaymentRequest(paymentData);
-    // console.log(await response.payment_request.longurl);
+    console.log( response);
 
-    return await res.json(response.payment_request.longurl);
+    // return await res.json(response.payment_request.longurl);
   } catch (error) {
     console.log(error);
     return res.json({ message: "Something Went Wrong" });

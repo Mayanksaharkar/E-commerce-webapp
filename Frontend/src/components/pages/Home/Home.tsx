@@ -4,10 +4,10 @@ import { ProductContext } from "../../../context/Product/ProductContextProvider"
 import FeaturedProductCard from "./FeaturedProductCard";
 import { ClipLoader } from "react-spinners";
 import { Product } from "../../../Models/Product";
-import { IoIosLaptop } from "react-icons/io";
-import { CiMobile3 } from "react-icons/ci";
-import { HiOutlineComputerDesktop } from "react-icons/hi2";
-import { PiTelevisionSimple } from "react-icons/pi";
+// import { IoIosLaptop } from "react-icons/io";
+// import { CiMobile3 } from "react-icons/ci";
+// import { HiOutlineComputerDesktop } from "react-icons/hi2";
+// import { PiTelevisionSimple } from "react-icons/pi";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 function Home() {
   const { AddPaymentData } = useContext(PaymentContext);
-  const { featuredProd, fetchFeaturedProducts, fetchProducts } =
+  const { featuredProd, fetchFeaturedProducts, fetchProducts , products } =
     useContext(ProductContext);
 
   const location = useLocation();
@@ -45,12 +45,23 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
+  if(featuredProd === undefined  ){
   useEffect(() => {
-    fetchFeaturedProducts();
-    fetchProducts();
+    const fetchData = async () => {
+      if (featuredProd === undefined ) {
+        await fetchFeaturedProducts();
+        
+      }
+      if(products === undefined ){
+        await fetchProducts();
+      }
+    };
+
+    fetchData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+}
 
   return (
     <>
@@ -99,7 +110,7 @@ function Home() {
         </div>
         <div className='w-full flex justify-center items-center bg-base-200 mb-3'>
           <div className='flex w-[60%]  justify-evenly items-center p-4 h-min text-slate-500'>
-            <IoIosLaptop
+            {/* <IoIosLaptop
               size={80}
               className='cursor-pointer hover:text-secondary px-4 py-2 rounded-lg'
               onClick={() => {
@@ -126,7 +137,7 @@ function Home() {
               onClick={() => {
                 navigate("/categories/homeAppliances");
               }}
-            />
+            /> */}
           </div>
         </div>
       </div>

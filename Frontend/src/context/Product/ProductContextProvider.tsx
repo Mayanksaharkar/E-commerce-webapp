@@ -50,6 +50,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
   };
 
   const fetchFeaturedProducts = async () => {
+    if(featuredProd.length > 0) return;
     try {
       const response = await fetch(`${url}/product/featuredproduct`, {
         method: "GET",
@@ -67,6 +68,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
     }
   };
   const fetchProducts = async () => {
+    if(products.length > 0) return;
     try {
       const response = await fetch(`${url}/product`, {
         method: "GET",
@@ -78,13 +80,14 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
       const data = await response.json();
 
       setProducts(data);
-      console.log(data);
+      // console.log(data);
       // setIsLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
   const getCategories = async () => {
+    if(categories.length > 0) return;
     try {
       const response = await fetch(`${url}/product/categories`, {
         method: "GET",
@@ -152,7 +155,7 @@ function ProductContextProvider({ children }: ProductContextProviderProps) {
   const ProductContextValue: ProductContextType = {
     isLoading,
     setIsLoading,
-    products: [],
+    products : [], 
     setProducts: setProducts,
     categories,
     setCategories,

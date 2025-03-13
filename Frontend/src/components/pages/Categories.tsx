@@ -16,8 +16,14 @@ function Categories() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts();
-    getCategories();
+    console.log(products);
+    if (products === undefined || products.length ===0) { 
+       fetchProducts(); }
+    
+    if (categories === undefined || categories.length === 0) { 
+
+      getCategories();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

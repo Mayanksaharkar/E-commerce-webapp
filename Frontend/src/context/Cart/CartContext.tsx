@@ -18,7 +18,9 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
   const [currCartId, setCurrCartId] = useState("");
 
   useEffect(() => {
-    fetchAllItems().then();
+    if (localStorage.getItem("uid") !== null) {
+      fetchAllItems().then();
+    }
   }, []);
 
   useEffect(() => {
@@ -53,6 +55,13 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
   };
 
   const fetchAllItems = async () => {
+    if (localStorage.getItem("uid") === null) {
+      return;
+    }
+    if (localStorage.getItem("token") === null) {
+      return;
+    }
+   
     try {
       const response = await fetch(
         `${url}/cart/${localStorage.getItem("uid")}`,
