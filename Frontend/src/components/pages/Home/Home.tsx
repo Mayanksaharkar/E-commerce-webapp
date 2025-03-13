@@ -45,14 +45,14 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  if(featuredProd === undefined  ){
+  
   useEffect(() => {
     const fetchData = async () => {
-      if (featuredProd === undefined ) {
+      if (featuredProd === undefined || featuredProd.length === 0) {
         await fetchFeaturedProducts();
         
       }
-      if(products === undefined ){
+      if(products === undefined  || products.length === 0){
         await fetchProducts();
       }
     };
@@ -61,7 +61,7 @@ function Home() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-}
+
 
   return (
     <>
