@@ -41,8 +41,8 @@ function DescAccordian(props: { Description: desc[] }) {
             </button>
           </h2>
           <div
-            className={`accordion-content  px-2  transition-max-height duration-300 ease-in-out overflow-hidden ${
-              activeIndex === index ? "max-h-screen" : "max-h-0"
+            className={`transition-all duration-300 overflow-hidden ${
+              activeIndex === index ? "max-h-[500px]" : "max-h-0"
             }`}
           >
             <p className='text-gray-600'>{desc.description}</p>

@@ -10,12 +10,13 @@ function CheckOut() {
   const handlePayment = async () => {
     try {
       const link = await makePayment();
-      console.log(link);
+      // console.log("link": makePayment());
+      console.log("Link" ,link);
 
       const uid = localStorage.getItem("uid") || "";
       removeAllItems(uid);
 
-      window.open(link, "_self");
+      // window.open(link, "_self");
     } catch (error) {
       console.error(error);
     }
