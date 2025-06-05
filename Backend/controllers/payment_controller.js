@@ -1,5 +1,6 @@
-import Razorpay from "razorpay";
-import Payments from "../models/Payments.js";
+
+const Razorpay = require("razorpay");
+const Payments = require("../models/Payments.js");
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY,
