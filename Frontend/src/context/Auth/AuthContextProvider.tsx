@@ -21,7 +21,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     }
     if (localStorage.getItem("uid") && isLoggedIn) {
       getUserData().then(() => {
-        console.log(currUser);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,7 +39,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         }
       );
       const res = await response.json();
-      console.log(res);
       setCurrUser(res);
       return;
     } catch (error) {
@@ -50,7 +48,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const login = async (user: LoginCredential) => {
     try {
-      console.log();
       const response = await fetch(`${url}/auth/login`, {
         method: "POST",
         headers: {
@@ -102,7 +99,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   const authContextValue: AuthContextType = {
     isLoggedIn: isLoggedIn,
-    currUser: {} as User,
+    currUser ,
     login,
     register,
     getUserData,

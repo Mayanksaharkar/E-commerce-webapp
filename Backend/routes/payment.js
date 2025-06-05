@@ -3,11 +3,13 @@ const router = express.Router();
 const { protect } = require("../middleware/auth");
 
 const {
-  checkout,
+  // checkout,
   AddPaymentData,
-} = require("../controllers/peyment_controller");
+  createOrder,
+} = require("../controllers/payment_controller");
 
-router.post("/", protect, checkout);
-router.post("/:paymentId", protect, AddPaymentData);
+// router.post("/", protect, checkout);
+router.post("/addPaymentData", protect, AddPaymentData);
+router.post("/createOrder", protect, createOrder);
 
 module.exports = router;

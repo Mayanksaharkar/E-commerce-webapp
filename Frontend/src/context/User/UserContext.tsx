@@ -27,7 +27,6 @@ function UserContextProvider({ children }: UserContextPropsType) {
   };
 
   const updateInfo = async () => {
-    console.log(userInfo);
 
     const response = await fetch(
       `${url}/auth/profile/${localStorage.getItem("uid")}`,

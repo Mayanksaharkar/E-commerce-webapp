@@ -4,6 +4,9 @@ export interface PaymentContextProviderProps {
 }
 
 export interface PaymentContextType {
-  makePayment: () => Promise<string>;
-  AddPaymentData: (payment_id: string, payment_status: string) => Promise<void>;
+  AddPaymentData: (payment_id: string, payment_status: string, amount: number) => Promise<void>;
+  handlePayment: (
+    removeAllItems: (uid: string) => void,
+    amount: number
+  ) => Promise<void>;
 }

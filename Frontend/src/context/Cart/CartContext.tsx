@@ -106,8 +106,7 @@ const CartContextProvider = ({ children }: CartContextProviderProps) => {
 
   const updateQty = async (qty: number, id: string) => {
     try {
-      console.log(qty, id, localStorage.getItem("uid"));
-
+  
       const response = await fetch(`${url}/cart/${id}`, {
         method: "PUT",
         headers: {
