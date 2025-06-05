@@ -9,41 +9,14 @@ import { CiMobile3 } from "react-icons/ci";
 import { HiOutlineComputerDesktop } from "react-icons/hi2";
 import { PiTelevisionSimple } from "react-icons/pi";
 
-import { useNavigate, useLocation } from "react-router-dom";
-import { PaymentContext } from "../../../context/Payment/PaymentContext";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const { AddPaymentData } = useContext(PaymentContext);
   const { featuredProd, fetchFeaturedProducts, fetchProducts, products } =
     useContext(ProductContext);
 
-  const location = useLocation();
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getUrlParameter = (name: string) => {
-      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-      const regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-      const results = regex.exec(location.search);
-      return results === null
-        ? ""
-        : decodeURIComponent(results[1].replace(/\+/g, " "));
-    };
-
-    const payment_status = getUrlParameter("payment_status");
-
-    if (payment_status === "Credit") {
-      toast.success("Payment was successful!");
-      const payment_id = getUrlParameter("payment_id");
-      AddPaymentData(payment_id, payment_status);
-      console.log(`Payment ID: ${payment_id}`);
-
-      navigate("/");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
 
   useEffect(() => {
     const fetchData = async () => {

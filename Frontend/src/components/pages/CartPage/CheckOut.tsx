@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
-import url from "../../../context/url";
+
 function CheckOut(props: { amount: number }) {
   const { items, removeAllItems } = useContext(CartContext);
 
