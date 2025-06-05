@@ -1,4 +1,3 @@
-
 const Razorpay = require("razorpay");
 const Payments = require("../models/Payments.js");
 
@@ -7,8 +6,8 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
-export const AddPaymentData = async (req, res) => {
-  const { payment_id, payment_status, user , amount} = req.body;
+const AddPaymentData = async (req, res) => {
+  const { payment_id, payment_status, user, amount } = req.body;
   try {
     const payment = new Payments({
       payment_id: payment_id,
@@ -24,11 +23,8 @@ export const AddPaymentData = async (req, res) => {
   }
 };
 
-
-
-export const createOrder = async (req, res) => {
- 
-  const { amount  } = req.body;
+const createOrder = async (req, res) => {
+  const { amount } = req.body;
   const options = {
     amount: amount * 100,
     currency: "INR",
@@ -41,4 +37,9 @@ export const createOrder = async (req, res) => {
     console.error("Error creating order:", error);
     res.status(500).json({ error: "Failed to create order" });
   }
+};
+
+module.exports = {
+  AddPaymentData,
+  createOrder,
 };
