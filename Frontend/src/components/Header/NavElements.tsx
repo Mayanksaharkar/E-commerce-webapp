@@ -47,8 +47,7 @@ function NavElements() {
           >
             <div className='w-10 rounded-full'>
               <img
-                alt='Tailwind CSS Navbar component'
-                src='https://d30ny7ijak9wq4.cloudfront.net/s3fs-public/images/story/2012/06/21/taara.jpg'
+                src='./../../public/profile_pic.jpg'
               />
             </div>
           </div>
@@ -59,6 +58,16 @@ function NavElements() {
             <li>
               <Link to={"/user/profile"}>Profile</Link>
             </li>
+            {
+              localStorage.getItem("uid") !== null || undefined ? (
+            
+             <li>
+              <Link to={"/orders"}>My Orders</Link>
+            </li>
+            ):(
+              <></>
+            )}
+           
             <li>
               <button
                 onClick={(e) => {

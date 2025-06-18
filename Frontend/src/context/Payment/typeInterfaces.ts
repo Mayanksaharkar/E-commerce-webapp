@@ -7,6 +7,7 @@ export interface PaymentContextType {
   AddPaymentData: (payment_id: string, payment_status: string, amount: number) => Promise<void>;
   handlePayment: (
     removeAllItems: (uid: string) => void,
-    amount: number
+    amount: number,
+    shippingCost?: number
   ) => Promise<void>;
 }

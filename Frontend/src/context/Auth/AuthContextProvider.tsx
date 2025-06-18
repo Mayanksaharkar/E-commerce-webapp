@@ -23,7 +23,6 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       getUserData().then(() => {
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getUserData = async () => {
@@ -40,7 +39,7 @@ const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
       );
       const res = await response.json();
       setCurrUser(res);
-      return;
+      return res;
     } catch (error) {
       console.error(error);
     }

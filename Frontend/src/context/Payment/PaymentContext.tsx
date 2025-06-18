@@ -5,6 +5,8 @@ import {
   PaymentContextProviderProps,
   PaymentContextType,
 } from "./typeInterfaces";
+import { CartContext } from "../Cart/CartContext.tsx"; 
+
 
 // Add Razorpay type declaration to the Window interface
 declare global {
@@ -17,12 +19,27 @@ export const PaymentContext = createContext<PaymentContextType>(
   {} as PaymentContextType
 );
 function PaymentContextProvider({ children }: PaymentContextProviderProps) {
-  const { currUser } = useContext(AuthContext);
+  const { currUser, getUserData } = useContext(AuthContext);
+  const { items, removeAllItems } = useContext(CartContext); // Get cart items
+  
+
 
   const handlePayment = async (
     removeAllItems: (uid: string) => void,
-    amount: number
+    amount: number,
+    shippingCost : number = 0 
   ) => {
+   
+    const user = await getUserData();
+    if (!user.address || user.address === "" || user.address === "undefined" || user.address === null) {
+      console.error("User address is not set");
+      alert("Please set your address before proceeding to payment.");
+      return;
+    }
+
+    const currentCartItems = [...items];
+    const uid = localStorage.getItem("uid");
+
     const res = await fetch(`${url}/payment/createOrder`, {
       method: "POST",
       headers: {
@@ -31,7 +48,7 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
       },
       body: JSON.stringify({
         amount: amount,
-        uid: localStorage.getItem("uid"),
+        uid: uid,
       }),
     });
     const order = await res.json();
@@ -42,11 +59,39 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
       name: "Your Company",
       description: "Test Transaction",
       order_id: order.id,
-      handler: function (response: { razorpay_payment_id: string; [key: string]: any }) {
+      handler: async function (response: {
+        razorpay_payment_id: string;
+        [key: string]: any;
+      }) {
         alert("Payment Successful");
-        removeAllItems(localStorage.getItem("uid") || "");
-        AddPaymentData(response.razorpay_payment_id, "success", amount);
-        // console.log(response);
+        console.log("Payment response:", response);
+        await AddPaymentData(response.razorpay_payment_id, "success", amount);
+
+        const orderRes = await fetch(`${url}/order`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            products: currentCartItems.map((item: any) => ({
+              product_id: item.product._id,
+              qty: item.qty,
+            })),
+            customer_id: uid,
+            total_price: amount,
+            address: user?.address || "Default Address",
+            transaction_id: response.razorpay_payment_id,
+            delivery_status: "Pending",
+            payment_status: "Paid",
+            shipping_cost: shippingCost,
+          }),
+        });
+        const orderData = await orderRes.json();
+        console.log("Order created:", orderData);
+        alert("Order placed successfully");
+
+        removeAllItems(uid || "");
       },
       prefill: {
         name: "Test User",
@@ -60,13 +105,15 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
         color: "#3399cc",
       },
     };
-
     const rzp = new window.Razorpay(options);
     rzp.open();
   };
 
-  const AddPaymentData = async (payment_id: string, payment_status: string ,amount : number) => {
-    // console.log(currUser); 
+  const AddPaymentData = async (
+    payment_id: string,
+    payment_status: string,
+    amount: number
+  ) => {
     try {
       const res = await fetch(`${url}/payment/addPaymentData`, {
         method: "POST",
@@ -78,7 +125,7 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
           payment_id,
           payment_status,
           amount: amount,
-          user: currUser,
+          user: user,
         }),
       });
 
@@ -92,8 +139,6 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
       console.error("Error adding payment data:", error);
     }
   };
-
-  
 
   const PaymentContextValue = {
     AddPaymentData,

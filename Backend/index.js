@@ -22,6 +22,7 @@ app.use("/auth", require("./routes/auth"));
 app.use("/product", require("./routes/product"));
 app.use("/cart", require("./routes/cart"));
 app.use("/payment", require("./routes/payment"));
+app.use("/order", require("./routes/order"));
 app.get("/", (req, res) => {
   res.send("Hello");
 });

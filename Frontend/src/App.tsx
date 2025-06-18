@@ -15,6 +15,7 @@ import CartContextProvider from "./context/Cart/CartContext";
 import UserContextProvider from "./context/User/UserContext";
 import SearchResult from "./components/pages/SearchResult";
 import CategoryPage from "./components/pages/CategoryPage";
+import OrderHistory from "./components/pages/Orders/OrderHistory";
 import PaymentContextProvider from "./context/Payment/PaymentContext";
 function App() {
   const router = createBrowserRouter([
@@ -53,6 +54,10 @@ function App() {
         {
           path: "/user/profile",
           element: <UserProfile />,
+        },
+        {
+          path: "/orders",
+          element: <OrderHistory />
         },
         {
           path: "/cart/:uid",

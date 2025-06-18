@@ -181,7 +181,7 @@ function Cart() {
                 <span>Total cost</span>
                 <span>₹ {totalCost.toLocaleString()}</span>
               </div>
-              <CheckOut amount={totalCost} />
+              <CheckOut amount={totalCost } shippingCost={shippingCost} />
             </div>
           </div>
         </div>

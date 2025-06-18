@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { CartContext } from "../../../context/Cart/CartContext";
 import { PaymentContext } from "../../../context/Payment/PaymentContext";
 
-function CheckOut(props: { amount: number }) {
+function CheckOut(props: { amount: number , shippingCost: number}) {
   const { items, removeAllItems } = useContext(CartContext);
 
   
@@ -16,7 +16,8 @@ function CheckOut(props: { amount: number }) {
       disabled={items.length === 0}
       onClick={async (e) => {
         e.preventDefault();
-        await handlePayment(removeAllItems,props.amount);
+        await handlePayment(removeAllItems,props.amount, props.shippingCost);
+        
       }}
     >
       Checkout
