@@ -20,7 +20,7 @@ export const PaymentContext = createContext<PaymentContextType>(
 );
 function PaymentContextProvider({ children }: PaymentContextProviderProps) {
   const { currUser, getUserData } = useContext(AuthContext);
-  const { items, removeAllItems } = useContext(CartContext); // Get cart items
+  const { items } = useContext(CartContext); // Get cart items
   
 
 
@@ -30,8 +30,8 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
     shippingCost : number = 0 
   ) => {
    
-    const user = await getUserData();
-    if (!user.address || user.address === "" || user.address === "undefined" || user.address === null) {
+    await getUserData(); // Refresh user data
+    if (!currUser.address || currUser.address === "" || currUser.address === "undefined" || currUser.address === null) {
       console.error("User address is not set");
       alert("Please set your address before proceeding to payment.");
       return;
@@ -77,10 +77,9 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
             products: currentCartItems.map((item: any) => ({
               product_id: item.product._id,
               qty: item.qty,
-            })),
-            customer_id: uid,
+            })),            customer_id: uid,
             total_price: amount,
-            address: user?.address || "Default Address",
+            address: currUser?.address || "Default Address",
             transaction_id: response.razorpay_payment_id,
             delivery_status: "Pending",
             payment_status: "Paid",
@@ -120,12 +119,11 @@ function PaymentContextProvider({ children }: PaymentContextProviderProps) {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
+        },        body: JSON.stringify({
           payment_id,
           payment_status,
           amount: amount,
-          user: user,
+          user: currUser,
         }),
       });
 
