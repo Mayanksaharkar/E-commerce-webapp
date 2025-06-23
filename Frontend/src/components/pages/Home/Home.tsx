@@ -2,7 +2,7 @@
 import { useContext, useEffect } from "react";
 import { ProductContext } from "../../../context/Product/ProductContextProvider";
 import FeaturedProductCard from "./FeaturedProductCard";
-import { ClipLoader } from "react-spinners";
+import FeaturedProductCardSkeleton from "./FeaturedProductCardSkeleton";
 import { Product } from "../../../Models/Product";
 import { IoIosLaptop } from "react-icons/io";
 import { CiMobile3 } from "react-icons/ci";
@@ -55,17 +55,18 @@ function Home() {
               featured collection.
             </p>
           </div>
-        </div>
-        <div>
-          {featuredProd !== undefined ? (
+        </div>        <div>
+          {featuredProd !== undefined && featuredProd.length > 0 ? (
             <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-7 lg:gap-10 p-4 h-min">
               {featuredProd.map((prod: Product, index: React.Key) => (
                 <FeaturedProductCard product={prod} key={index} />
               ))}
             </div>
           ) : (
-            <div className="w-full h-44 flex justify-center items-center">
-              <ClipLoader color="#000000" />
+            <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-7 lg:gap-10 p-4 h-min">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <FeaturedProductCardSkeleton key={index} />
+              ))}
             </div>
           )}
         </div>
